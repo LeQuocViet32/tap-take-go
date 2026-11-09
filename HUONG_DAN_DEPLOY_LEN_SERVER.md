@@ -1,11 +1,25 @@
 # HƯỚNG DẪN ĐƯA HỆ THỐNG TAP TAKE GO LÊN SERVER INTERNET
 ## PUBLIC ACCESS & CLOUD DEPLOYMENT GUIDE
 
-Tài liệu này cung cấp 3 giải pháp để đưa ứng dụng **Tap Take Go** từ môi trường `localhost` lên mạng Internet toàn cầu, giúp điện thoại (4G/WiFi), máy tính từ xa và phần cứng ESP32 có thể kết nối bất kỳ lúc nào.
+---
+
+## 🌟 ĐƯỜNG LINK INTERNET TAILSCALE HIỆN TẠI (ĐANG HOẠT ĐỘNG TRỰC TIẾP)
+
+Hệ thống **Tailscale Funnel** đã được cài đặt và cấu hình thành công trên máy tính của bạn:
+
+- 🔗 **Địa chỉ Web công khai (HTTPS):**  
+  [https://kozean-1.tail9f43b5.ts.net/](https://kozean-1.tail9f43b5.ts.net/)
+- 📱 **Địa chỉ IP nội bộ Tailnet:**  
+  `http://100.68.137.95:5000`
+- 💳 **Địa chỉ Webhook Ngân Hàng SePay:**  
+  `https://kozean-1.tail9f43b5.ts.net/api/webhook/payment`
+
+> Mọi thiết bị trên toàn thế giới (điện thoại 4G/WiFi, máy tính ngoài quán net, hoặc ngân hàng SePay) đều có thể truy cập thẳng vào link HTTPS trên mà **không cần cài Tailscale**.
 
 ---
 
-## 🚀 GIẢI PHÁP 1: MỞ RA INTERNET TỨC THÌ TRONG 1 PHÚT (MIỄN PHÍ)
+## 🚀 CÁC GIẢI PHÁP TRIỂN KHAI KHÁC
+
 *Phù hợp nhất để demo, kiểm thử với điện thoại thật quét VietQR và nhận Webhook SePay từ ngân hàng ngay hôm nay mà chưa cần mua máy chủ VPS.*
 
 Dự án hiện đang chạy tại cổng `5000`. Bạn có thể sử dụng công cụ Tunneling bảo mật miễn phí để sinh một đường link **HTTPS công khai**.
