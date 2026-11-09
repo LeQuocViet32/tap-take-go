@@ -8,11 +8,11 @@
 Hệ thống **Tailscale Funnel** đã được cài đặt và cấu hình thành công trên máy tính của bạn:
 
 - 🔗 **Địa chỉ Web công khai (HTTPS):**  
-  [https://kozean-1.tail9f43b5.ts.net/](https://kozean-1.tail9f43b5.ts.net/)
+  [https://taptakego.tail9f43b5.ts.net/](https://taptakego.tail9f43b5.ts.net/)
 - 📱 **Địa chỉ IP nội bộ Tailnet:**  
   `http://100.68.137.95:5000`
 - 💳 **Địa chỉ Webhook Ngân Hàng SePay:**  
-  `https://kozean-1.tail9f43b5.ts.net/api/webhook/payment`
+  `https://taptakego.tail9f43b5.ts.net/api/webhook/payment`
 
 > Mọi thiết bị trên toàn thế giới (điện thoại 4G/WiFi, máy tính ngoài quán net, hoặc ngân hàng SePay) đều có thể truy cập thẳng vào link HTTPS trên mà **không cần cài Tailscale**.
 
