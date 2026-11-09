@@ -1,0 +1,19 @@
+# Dependencies
+node_modules/
+*/node_modules/
+
+# Production builds
+client/dist/
+
+# Environment files
+.env
+*.env
+!.env.example
+
+# OS and Editor files
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.vscode/
+.idea/

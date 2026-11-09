@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  tap-take-go:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: tap-take-go-app
+    restart: always
+    ports:
+      - "5000:5000"   # Web & Socket.io
+      - "1883:1883"   # MQTT Broker cho ESP32
+    environment:
+      - PORT=5000
+      - NODE_ENV=production
+      # - MONGODB_URI=mongodb+srv://<user>:<password>@cluster.mongodb.net/taptakego
+    volumes:
+      - ./server/data:/app/server/data  # Giữ dữ liệu JSON khi restart container
