@@ -7,7 +7,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 import store from './db/store.js';
-import { registerSocketIO, getActiveCart } from './services/cartService.js';
+import { registerSocketIO, getActiveCart, handleAbsoluteWeightReading } from './services/cartService.js';
 import { initMQTT } from './services/mqttService.js';
 
 import authRoutes from './routes/authRoutes.js';
@@ -96,6 +96,29 @@ io.on('connection', (socket) => {
   socket.emit('cart_updated', activeCart);
   socket.emit('store_settings', store.data.settings);
   socket.emit('gate_status', store.data.activeGate);
+
+  // Fast WebSocket path for real-time scale telemetry (low latency vs HTTP POST)
+  socket.on('sensor_reading', async (data, ack) => {
+    try {
+      const { slot_id, weight, grams, weight_grams, pcs, stable, user_id, auto_cart } = data || {};
+      const resolvedWeight = weight !== undefined ? weight : (grams !== undefined ? grams : weight_grams);
+      if (resolvedWeight === undefined) {
+        if (typeof ack === 'function') ack({ success: false, message: 'Missing weight' });
+        return;
+      }
+      const result = await handleAbsoluteWeightReading({
+        slotId: slot_id || 'KH1_1',
+        weight: resolvedWeight,
+        pcs,
+        stable,
+        userId: user_id || null,
+        autoCart: auto_cart !== false
+      });
+      if (typeof ack === 'function') ack(result);
+    } catch (err) {
+      if (typeof ack === 'function') ack({ success: false, message: err.message });
+    }
+  });
 
   socket.on('disconnect', () => {
     // Client disconnected

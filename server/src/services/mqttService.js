@@ -1,7 +1,12 @@
 import aedes from 'aedes';
 import net from 'net';
 import mqtt from 'mqtt';
-import { handleWeightChange, handleCustomerEntry, registerMQTTPublisher } from './cartService.js';
+import {
+  handleWeightChange,
+  handleAbsoluteWeightReading,
+  handleCustomerEntry,
+  registerMQTTPublisher
+} from './cartService.js';
 
 let aedesInstance = null;
 let brokerServer = null;
@@ -69,9 +74,20 @@ export async function initMQTT(brokerUrl = 'mqtt://127.0.0.1:1883', port = 1883)
         console.log(`📥 [MQTT Message] Topic [${topic}]:`, payload);
 
         if (topic === 'store/sensor/weight') {
-          // Payload format: { "slot_id": "NODE_01", "weight_change": -390, "user_id": "usr_123" }
-          const { slot_id, weight_change, user_id, card_id } = payload;
-          if (slot_id !== undefined && weight_change !== undefined) {
+          // Support both absolute live weight { slot_id, weight, pcs, stable }
+          // and delta variation { slot_id, weight_change }
+          const { slot_id, weight, grams, pcs, stable, weight_change, user_id, card_id, auto_cart } = payload;
+          const liveWeight = weight !== undefined ? weight : grams;
+          if (slot_id !== undefined && liveWeight !== undefined) {
+            await handleAbsoluteWeightReading({
+              slotId: slot_id,
+              weight: liveWeight,
+              pcs,
+              stable,
+              userId: user_id || card_id || null,
+              autoCart: auto_cart !== false
+            });
+          } else if (slot_id !== undefined && weight_change !== undefined) {
             await handleWeightChange(slot_id, Number(weight_change), user_id || card_id || null);
           }
         } else if (topic === 'store/gate/entry') {

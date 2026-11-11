@@ -28,11 +28,63 @@
       "password": "khachhang2",
       "rfid_card_id": "RFID_9F93A",
       "role": "customer",
-      "is_in_store": true,
+      "is_in_store": false,
       "created_at": "2026-11-09T06:24:20.160Z"
+    },
+    {
+      "_id": "usr_mw906fsg",
+      "name": "Phạm Hoàng Giang",
+      "phone_number": "0384141681",
+      "password": "Giang@123",
+      "rfid_card_id": "RFID_772DA",
+      "role": "customer",
+      "is_in_store": false,
+      "created_at": "2026-11-09T08:32:20.848Z"
+    },
+    {
+      "_id": "usr_mw906och",
+      "name": "viet",
+      "phone_number": "0358391749",
+      "password": "123",
+      "rfid_card_id": "RFID_E2AC8",
+      "role": "customer",
+      "is_in_store": false,
+      "created_at": "2026-11-09T08:32:31.937Z"
+    },
+    {
+      "_id": "usr_mwaczbi5",
+      "name": "vcl",
+      "phone_number": "0905778899",
+      "password": "Kiss",
+      "rfid_card_id": "vcl",
+      "role": "customer",
+      "is_in_store": false,
+      "created_at": "2026-11-10T07:18:29.885Z"
     }
   ],
   "products": [
+    {
+      "_id": "prod_mwavdfar_cou",
+      "sku": "SKU-001075",
+      "barcode": "8242043189216",
+      "name": "V?t m?u c�n 48g",
+      "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80",
+      "weight_per_unit": 48,
+      "price": 15000,
+      "stock": 20,
+      "category": "Mặt hàng tùy chọn"
+    },
+    {
+      "_id": "prod_mwaswu8n",
+      "sku": "SKU-868055",
+      "barcode": "2363586433184",
+      "name": "remote",
+      "image": "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&auto=format&fit=crop&q=80",
+      "weight_per_unit": 48,
+      "price": 15000,
+      "stock": 20,
+      "category": "Mặt hàng tùy chọn"
+    },
     {
       "_id": "prod_001",
       "sku": "BEV-COCA-330",
@@ -41,7 +93,7 @@
       "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
       "weight_per_unit": 390,
       "price": 12000,
-      "stock": 16,
+      "stock": 0,
       "category": "Nước giải khát"
     },
     {
@@ -52,7 +104,7 @@
       "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
       "weight_per_unit": 280,
       "price": 15000,
-      "stock": 12,
+      "stock": 8,
       "category": "Nước giải khát"
     },
     {
@@ -63,7 +115,7 @@
       "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
       "weight_per_unit": 65,
       "price": 16000,
-      "stock": 6,
+      "stock": 14,
       "category": "Bánh snack"
     },
     {
@@ -80,62 +132,52 @@
   ],
   "shelfSlots": [
     {
-      "_id": "slot_001",
-      "slot_id": "NODE_01",
-      "product_id": "prod_001",
-      "current_total_weight": 2730,
-      "expected_unit_weight": 390,
-      "status": "Active",
-      "last_updated": "2026-11-09T06:41:45.684Z"
-    },
-    {
-      "_id": "slot_002",
-      "slot_id": "NODE_02",
+      "_id": "slot_mwbvvr1d_nmx",
+      "shelf_id": "SHELF_01",
+      "slot_number": 2,
+      "slot_id": "KH1_2",
       "product_id": "prod_002",
-      "current_total_weight": 1680,
       "expected_unit_weight": 280,
+      "current_total_weight": 1400,
+      "last_stable_weight": 1400,
       "status": "Active",
-      "last_updated": "2026-11-09T06:41:46.540Z"
+      "last_updated": "2026-11-11T09:18:47.514Z"
     },
     {
-      "_id": "slot_003",
-      "slot_id": "NODE_03",
+      "_id": "slot_mwbvvvgx_lal",
+      "shelf_id": "SHELF_01",
+      "slot_number": 3,
+      "slot_id": "KH1_3",
       "product_id": "prod_003",
-      "current_total_weight": 325,
       "expected_unit_weight": 65,
+      "current_total_weight": 325,
+      "last_stable_weight": 325,
       "status": "Active",
-      "last_updated": "2026-11-09T06:41:59.334Z"
+      "last_updated": "2026-11-11T09:18:51.488Z"
     },
     {
-      "_id": "slot_004",
-      "slot_id": "NODE_04",
-      "product_id": "prod_004",
-      "current_total_weight": 3120,
-      "expected_unit_weight": 520,
+      "_id": "slot_mwbwotxz_4xk",
+      "shelf_id": "SHELF_01",
+      "slot_number": 1,
+      "slot_id": "KH1_1",
+      "product_id": "prod_001",
+      "expected_unit_weight": 390,
+      "current_total_weight": 2730,
+      "last_stable_weight": 2730,
       "status": "Active",
-      "last_updated": "2026-11-09T06:42:00.116Z"
+      "last_updated": "2026-11-11T09:18:14.423Z"
     }
   ],
   "virtualCarts": [
     {
-      "_id": "cart_mw8w5xmc_rowp",
-      "order_code": "TTG9276",
+      "_id": "cart_mwarxqh4_9tj0",
+      "order_code": "TTG4990",
       "user_id": "usr_mw8uv4tp",
       "customer_name": "khachhang1",
       "phone_number": "0763644017",
       "rfid_card_id": "RFID_8CFFE",
       "items": [
         {
-          "product_id": "prod_001",
-          "sku": "BEV-COCA-330",
-          "name": "Coca Cola Sleek 330ml",
-          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
-          "price": 12000,
-          "weight_per_unit": 390,
-          "quantity": 1,
-          "subtotal": 12000
-        },
-        {
           "product_id": "prod_002",
           "sku": "BEV-REDBULL-250",
           "name": "Nước tăng lực Red Bull 250ml",
@@ -144,112 +186,51 @@
           "weight_per_unit": 280,
           "quantity": 1,
           "subtotal": 15000
-        },
-        {
-          "product_id": "prod_003",
-          "sku": "SNK-LAYS-060",
-          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
-          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
-          "price": 16000,
-          "weight_per_unit": 65,
-          "quantity": 1,
-          "subtotal": 16000
-        },
-        {
-          "product_id": "prod_004",
-          "sku": "BEV-AQUA-500",
-          "name": "Nước khoáng thiên nhiên Aquafina 500ml",
-          "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80",
-          "price": 8000,
-          "weight_per_unit": 520,
-          "quantity": 1,
-          "subtotal": 8000
         }
       ],
-      "total_amount": 51000,
-      "status": "Completed",
-      "created_at": "2026-11-09T06:39:58.836Z",
-      "updated_at": "2026-11-09T06:40:41.145Z",
+      "total_amount": 15000,
+      "status": "Checkout_Pending",
+      "created_at": "2026-11-10T14:17:10.216Z",
+      "updated_at": "2026-11-11T09:06:30.134Z",
       "vietQR": {
-        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=51000&addInfo=TTG9276&accountName=TAP%20TAKE%20GO%20STORE_THANG",
-        "base64QR": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFACAYAAADNkKWqAAAAAklEQVR4AewaftIAABhVSURBVO3BwZVcOQ5FwSue8gN72ADzYQP2sESjZQ42ycP+qapuvohfv/9ARORCCxGRSy1ERC61EBG51EJE5FILEZFLLURELrUQEbnUQkTkUgsRkUt9sck8+Cm6kqeYBz9ZVzKZB1NXMpkH73Qlp8yDqSuZzIOpK5nMgyd1JSfMg6kr2WEePKkreZJ58KormcyDHV3JZB78FF3JOwsRkUstREQutRARudRCRORSX/wDXcmnmQc7zIOpK3mnKzllHpzqSibzYEdXMpkHU1fyjnkwdSWTeTB1JafMg1NdyWQe7DAPXnUlU1eywzz4DubB1JXs6Er+tq7k08yDEwsRkUstREQutRARudRCRORSXzzMPDjVlZzqSnaYB0/pSk6ZBzvMg1PmwdSVvOpKJvPglHkwdSWnzIPJPJi6kqeYB1NXMnUln2YePMk8+AnMg1NdyVMWIiKXWoiIXGohInKphYjIpb74DzMP3ulKJvNgh3kwdSU7upLJPJi6ksk82NGVvGMe7OhKdnQlO8yD79CVnDAPpq5kh3kwdSWTebCjK5nMg6krmbqSV+bB1JVM5sF/0UJE5FILEZFLLURELrUQEbnUF/9hXclkHrzTlewwDybz4FRXMpkHU1cymQeTefBOVzKZB6fMg0/rSnaYB+90JVNXMpkHk3kwdSU7zIMdXckp82DqSt4xD6au5L9oISJyqYWIyKUWIiKXWoiIXOqLh3Ul38E8mLqSqSt5SlcymQdTVzKZB5N5cKormcyDd8yDqSvZYR7s6EpOmQeTeTB1JTu6kqd0Jae6ksk82GEeTF3JZB6c6Eo+rSv5CRYiIpdaiIhcaiEicqmFiMilvvgHzIN/G/PgVVcymQdTVzKZB1NXMpkHU1cymQdTVzKZB1NXsqMreWUe7DAPpq5kMg92mAdTV7KjK5nMg6krmcyDV13JZB5MXclkHkxdyX+ReTB1JTvMg59qISJyqYWIyKUWIiKXWoiIXOrX7z/4DzAPdnQlr8yDHV3JDvNg6kp2mAc7upLJPNjRlbxjHjypKzllHkxdyQ7zYOpKXpkHO7qSU+bBjq5kMg9OdSUnzIMdXcm/3UJE5FILEZFLLURELrUQEbnUF9/EPHhSVzKZB5N58E5XMpkHTzIPpq5kh3kwdSU7zINXXcnUlewwD3aYB9+hKznRlewwD6auZOpKJvPg08yDE13JKfNgR1dyyjyYupITCxGRSy1ERC61EBG51EJE5FJfbDIPpq5kMg+mrmRHV3LKPJi6knfMg8k82NGVTObBjq5kMg+mrmSHebCjK3llHpzqSnaYB1NX8iTzYEdX8o55cMo8mLqSHebBjq5kh3kwdSVPMQ8+zTyYupKnLERELrUQEbnUQkTkUgsRkUv9+v0HG8yDHV3JZB78FF3JK/Ng6kom8+A7dCU7zIMdXck75sHUlUzmwdSV7DAPdnQlk3mwoys5YR7s6Eom82DqSnaYB5/WlbxjHpzqSibzYOpKdpgHO7qSEwsRkUstREQutRARudQX/0BXsqMrmcyDHV3JZB5MXclkHrzTlUzmwdSV7DAPdnQlp8yDqSuZzIN3zIOpK3mSebCjK9nRlZwyD151JVNXssM82GEe7OhKdpgHO7qSv808mLqSyTyYupIdXclkHkxdyTsLEZFLLURELrUQEbnUQkTkUl9s6kp2mAdTV7KjK5nMg6krOWUevOpKpq5kMg+mrmTqSk6ZB1NXssM8mLqSd7qSyTyYupId5sGOrmQyD6au5EldySvz4FRXMpkHTzIPpq5kh3kwdSWvzIOpK5nMg6krmcyDTzMPnrIQEbnUQkTkUgsRkUstREQu9cUm82DqSj6tK5nMg6kr+aSuZDIPdnQlk3nwHcyDE+bBqa5kMg92mAdTVzKZB1NXMpkHr7qS79CVTObB1JVM5sHUlewwD050JTu6kid1JZ+0EBG51EJE5FILEZFLLURELvXFpq5kMg+mrmRHV7LDPNhhHuzoSl6ZBzu6kh1dyXfoSibz4J2u5NPMg1NdyWQeTF3JCfPgp+hKJvNgh3kwdSWTefCqK9lhHkxdyWQeTF3J1JWcMg+mruTEQkTkUgsRkUstREQutRARudQXm8yDqSv5tK5kMg92dCWTefCqK9lhHkxdyWQeTF3Jjq7klHmwoyt5ZR5MXclkHuzoSqauZDIPpq7klHmwoys5YR5MXckO82AyD3Z0JafMg6kr+aSuZId58BMsREQutRARudRCRORSCxGRS32xqSs5ZR48qSuZzIMdXckr82DqSnaYB1NXMpkHU1eywzyYupLJPDjRlUzmwdSVTObBZB48yTz4JPNgR1eywzyYupLJPJi6ksk8mLqSHV3JO+bBk8yDqSs51ZXsMA+mruSdhYjIpRYiIpdaiIhcaiEicqkvvklX8h3MgxNdyWQeTObBKfPg08yDE+bBqa5kMg8m82DqSk6ZBye6ksk8mLqSqSuZzIOpK5nMg6krmcyDv60rmcyDqSuZzIOpK5nMg8k8mLqSpyxERC61EBG51EJE5FILEZFLfbHJPNjRlUxdyWQeTF3JZB78bebB1JVMXckO82AyD6auZId5sKMrmcyDV13JDvPglHnwaebBDvPgHfNg6kp2mAc7zIOpK5nMgx1dyQ7z4J2uZDIPPq0rmcyDT1qIiFxqISJyqYWIyKUWIiKX+uKH60pOmQdTV/KOeTCZB9/BPJi6kh3mwTvmwY6uZDIPTnUln9aVvGMeTF3JZB5MXcmOrmQyDybzYEdXMpkHU1cydSWvzINTXckp82DqSqauZDIPnrIQEbnUQkTkUgsRkUstREQu9cU/0JWc6kom82BHVzKZByfMgx1dySnzYOpKPq0rmcyDv60r2WEeTF3Jjq7kRFcymQdTV7KjK5nMgx1dyWQe/G3mwQ7zYEdXMpkHk3kwdSU7upITCxGRSy1ERC61EBG51EJE5FK/fv/BIfPgSV3JDvNg6kom82DqSj7JPHhSV3LKPJi6klfmwdSV7DAPpq5kMg+mruSUefBTdSWTeTB1JZN5MHUlk3kwdSWTefCUrmQyD57UlZwyD6au5J2FiMilFiIil1qIiFxqISJyqV+//+CQebCjK5nMg0/rSibz4FVXMpkHU1cymQdTVzKZB1NXMpkHU1cymQdTV7LDPHjVlZwyD3Z0JZN5MHUlp8yDqSuZzINXXclkHkxdyQ7zYOpKJvPgSV3JCfPgVFdyyjw41ZU8ZSEicqmFiMilFiIil1qIiFzqi7/APDjVlUzmwdSVTObB1JW805WcMg92mAdTV3LKPDhhHkxdyWQeTF3JdzAP/jbzYEdXcqormcyDqSs5ZR6805VM5sGTupKfYCEicqmFiMilFiIil/rim3QlO8yDU13JO+bBqa5kMg+mrmQyD57UlUzmwdSVvDIPJvPgSebB1JVM5sHUlUxdyQ7z4CldyQ7z4JR5MHUlT+pKTnQlk3mwoyvZYR7s6Eom82DqSt5ZiIhcaiEicqmFiMilFiIil/r1+w82mAc7upId5sGOruRJ5sGrrmQyD57UlUzmwU/QlUzmwamuZDIPpq5kh3kwdSWTeTB1JZN5cKIr2WEeTF3JDvPgVFcymQdTV/LKPDjVlewwD6auZId5cKoreWchInKphYjIpRYiIpdaiIhc6tfvP9hgHpzqSibz4EldyWQeTF3JCfPg07qSyTyYupLJPJi6knfMg6kr+SnMgx1dyWQeTF3JK/PgVFcymQdTVzKZBzu6ksk82NGVTObBq65kMg+mrmSHeXCqK5nMg1NdyTsLEZFLLURELrUQEbnUQkTkUl/8cF3Jqa7khHlwqis5ZR5MXclkHnySeTB1JZN58GldyWQeTObBDvPgna7kVFcymQdTVzKZB6e6ksk8mLqSd7qSHebBjq5kh3kwdSU7zIMTCxGRSy1ERC61EBG51EJE5FJf/ANdyWQePMk8+KSuZOpKdpgHk3kwdSWTeTB1JZN5MHUlp8yDV13JZB5M5sHUlUzmwZPMgyd1Je+YBz+FeTB1JZN5MHUl75gHn2YenDIPpq7kKQsRkUstREQutRARudRCRORSX/wF5sGOruSUeTB1JZN58EldyWQe7DAPpq5kMg92dCUnupLJPJjMgx1dySnzYOpKdpgHJ7qSU+bB1JWc6kom82DqSibz4ERXMpkHU1dyyjz4CRYiIpdaiIhcaiEicqmFiMilvvgHzIOpK5nMg1PmwdSV/G3mwdSV7OhKJvNg6kom82DqSnaYB1NX8so8mLqSqSuZzINT5sHUlTypK3mKebCjK/k36UqeZB5MXcmOrmQyDybz4CkLEZFLLURELrUQEbnUQkTkUl/8BV3JZB7s6EpOmQdTV/LKPNjRlTypK3mSebDDPDhhHkxdyWQe7OhKPs08mLqSV+bBjq5kMg8m82DqSn6KruQd8+BUV3LKPJi6kk9aiIhcaiEicqmFiMilFiIil/r1+w82mAdTVzKZB1NXMpkHP0FXMpkHp7qSyTyYupLJPNjRlXySefBf0JVM5sGrrmQyD6auZDIPTnUlk3kwdSVPMg/e6Uom8+An60pOLERELrUQEbnUQkTkUgsRkUt9sakr2dGVTObB1JVM5sHUlUzmwdSVTObB1JWc6EpOdSU7upLJPNhhHuzoSl6ZB9+hK3mSeXDCPHhSVzKZBzu6kieZB1NX8so8mMyDHV3JDvNgR1eywzyYzIOpK3lnISJyqYWIyKUWIiKXWoiIXOqLTebB1JVM5sGTzIOpK3mKeTB1JZN5MHUlk3kwdSWTeTB1JTvMg6kr2WEevOpKdpgHTzIPdnQlk3kwdSWTefBOV/Ik82CHeXCqKzllHpzoSibzYEdXcso8+KSFiMilFiIil1qIiFxqISJyqV+//+DDzIMdXckp82DqSibz4FVXssM8mLqSyTzY0ZV8mnnwTlcymQf/Nl3JCfNg6kom8+DTupLJPDjVlUzmwauuZId5MHUlO8yDqSvZYR5MXclTFiIil1qIiFxqISJyqYWIyKW+2GQe7OhKnmQeTF3J1JVM5sHUlbwyD76DeTB1JZN5MHUlO7qSd8yDqSv5NPNgR1cymQeTeTB1Jf8m5sGOrmQyDybz4B3z4Enmwb/JQkTkUgsRkUstREQu9cVf0JVM5sFkHkxdyWQeTF3J1JW805V8WlfyJPNgR1cymQfvmAc7upIndSV/W1eyoyuZzIOpKzllHnxaV/LKPJi6kid1JZN5cMo82NGVvLMQEbnUQkTkUgsRkUstREQu9ev3H3wD8+BUV3LKPHjVlUzmwamuZDIPdnQlk3mwoyvZYR686kp2mAenupInmQef1JWcMg+mruSUefATdCWTeTB1JZN5MHUlk3mwoyuZzIOpK3lnISJyqYWIyKUWIiKXWoiIXOrX7z/YYB5MXclPYR5MXckJ8+BUV7LDPNjRlewwD6au5IR5sKMr2WEePKkr2WEeTF3JO+bB1JVM5sGOruQ7mAdP6Uom82DqSv5NFiIil1qIiFxqISJyqYWIyKV+/f6Db2AeTF3JZB5MXclkHuzoSk6YB1NXssM8mLqSyTw41ZXsMA9edSU7zIMdXckO82DqSj7NPHjVlXyaeTB1JZN5MHUlk3lwqit5xzzY0ZVM5sHUlUzmwdSVTObB1JU8ZSEicqmFiMilFiIil1qIiFzq1+8/2GAeTF3JDvNgR1eywzz427qSU+bBjq5kMg+mrmQyD6au5B3z4EldyWQe7OhKdpgHO7qSd8yDU13JKfNg6kom8+BJXckr82DqSnaYBzu6kk8zD6au5J2FiMilFiIil1qIiFxqISJyqS8eZh7s6Ep2mAdP6kreMQ9OmQenzIOpK5nMgx3mwdSVvOpKJvNgR1cymQdTVzKZBzvMg6kr+aSuZDIPJvNg6kom82CHefCkruSdruRJXclkHkxdyQ7z4JMWIiKXWoiIXGohInKphYjIpX79/oMfwjyYupLJPJi6ksk8eKcr2WEe7OhKdpgHU1eywzyYupLJPJi6klfmwY6uZDIPpq5kh3mwoys5ZR5MXckr82BHV7LDPHhSV3LKPJi6knfMg6krOWUePKkrecpCRORSCxGRSy1ERC61EBG51BcPMw92dCVTVzKZB0/qSl6ZB1NXsqMrmcyDqSuZupLJPJi6kh3mwYmuZDIPJvNg6kqe1JU8qSv527qSJ5kHO7qSHebBO13JZB6c6kp2mAdTVzKZBzu6kncWIiKXWoiIXGohInKphYjIpb7YZB5MXcnUlewwD3Z0JTvMgxNdySnzYOpKJvPg07qSHebBq67kO3QlO8yDHV3JDvPgVVeywzyYupJT5sHUlUxdyQ7zYOpKntKV7DAPTnUlf9tCRORSCxGRSy1ERC61EBG51BebupId5sGOrmQyDybzYOpKpq5kh3nwTleyoys51ZVM5sGTzIOpK3llHkxdyQ7z4EldydSVTObBZB7s6EqeYh6c6kp2mAdTV3LKPHjVlUzmwY6uZOpKTpkHp7qSEwsRkUstREQutRARudRCRORSX/wD5sGOrmQyD3Z0JZN5sKMrOWEefJp5MHUlO7qSyTw40ZXsMA9OdSWf1pVM5sEndSU7zIPJPNjRlTypK3llHuzoSnaYB6e6ksk82GEeTF3JOwsRkUstREQutRARudRCRORSX2wyD3Z0JZN5MHUlk3kwmQdTV/KUrmQyD3aYB1NXcso8mLqSyTzY0ZW8Yx7s6EpOmQdTVzKZB6fMg6krOWEeTF3Jqa7kSebBT9WV7DAPTnUlT1mIiFxqISJyqYWIyKUWIiKX+uJh5sHUlUzmwY6uZDIPdnQl75gHO7qSU13JT2EevOpKvoN5MHUln2YevOpKdpgHU1cymQdTVzKZB6e6klPmwauuZId5cKormbqSyTz42xYiIpdaiIhcaiEicqkvNnUlO8yDyTw4ZR5MXckO82DqSl6ZBzvMgx1dySnz4NO6klfmwdSVfFpXMpkHO7qSU13JK/NgR1fyaV3JZB6cMg9OmAc7upJP60o+aSEicqmFiMilFiIil1qIiFzqi03mwamuZDIPpq5kh3mwoys50ZVM5sGTzIOpK9lhHkxdyWQevNOV7DAPdnQlU1eyoyuZzINT5sHUlbzqSnaYBz+FebCjK3lKVzKZB6e6kqkrmcyDqSuZzIOpK3lnISJyqYWIyKUWIiKXWoiIXOrX7z/YYB48qSvZYR5MXckp8+An6Eom8+BUV7LDPHinK5nMg6krmcyDn6wreYp5cKorOWUeyP/rSk4sREQutRARudRCRORSCxGRS/36/Qf/AebBjq7klXmwoyt5knkwdSWnzIMTXckp82BHV3LKPNjRlUzmwdSVvGMe7OhKdpgHp7qSU+bB1JW8Yx7s6EpOmQenupKnLERELrUQEbnUQkTkUgsRkUt9sck8+Cm6klPmwauu5EnmwdSVTF3JZB5MXclP1ZVM5sEO82DqSk6ZB1NXcqIr2WEeTF3J1JVM5sEO82DqSnZ0JX+beTB1JTu6ksk8+KSFiMilFiIil1qIiFxqISJyqS/+ga7k08yDU13JO+bB1JXsMA92mAc7upId5sGOrmQyD06YB1NXcqorOdWVTObB39aVTObB1JXs6EpOmQc/QVfyb7IQEbnUQkTkUgsRkUstREQu9cXDzINTXcmTzIOpK3nHPDjVlUzmwdSV7DAPntSVvDIPpq7kSebBT2EevOpKJvNg6kom82CHeXDKPJi6kp/APPgO5sHUlZxYiIhcaiEicqmFiMilFiIil/riP6Ir2WEevOpKJvNg6kom82AyD6au5EldyQ7zYOpKXnUlO7qSyTzY0ZVM5sHUlUzmwWQe7DAPnmIeTF3Jk8yDqSuZzINTXck75sHUlUzmwZPMg6kr2WEeTF3JOwsRkUstREQutRARudRCRORSX8gW82DqSk6ZB1NXMnUlk3nwFPNg6kpOdSWTeXCqK9lhHjylK9lhHuzoSibzYOpKdnQlO8yDd8yDqSvZ0ZVM5sGnmQdTV3JiISJyqYWIyKUWIiKXWoiIXOqLh3Ul/ybmwdSVTObBZB7s6EqmrmQyD3Z0JZN5MHUl73QlO8yDU13JKfNg6kqmrmQyD6au5B3zYOpKpq7kSebB1JVM5sGOruQp5sHUlUxdyb/JQkTkUgsRkUstREQutRARudSv33+wwTz4KbqSU+bBq67klHkwdSU/hXkwdSXvmAenupLJPJi6ku9gHrzTlewwD57UlUzmwdSVPMU82NGVnDIPdnQlO8yDHV3JOwsRkUstREQutRARudRCRORSv37/gYjIhRYiIpdaiIhcaiEicqmFiMilFiIil1qIiFxqISJyqYWIyKX+B6kSpGDVPM8VAAAAAElFTkSuQmCC",
+        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=15000&addInfo=TTG4990&accountName=TAP%20TAKE%20GO%20STORE_THANG",
+        "base64QR": "data:image/png;base64,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udRCRORSCxGRS/36/QcbzIMndSU7zIOpKzllHpzoSibz4FRXMpkHp7qSHebBO13JZB5MXclkHvxkXclTzINTXckp80D+v67kxEJE5FILEZFLLURELrUQEbnUr99/8D/APNjRlbwyD57UlewwD6au5JR5cKIrOWUe7OhKTpkHO7qSyTyYupJ3zIMdXckO8+BUV3LKPJi6knfMgx1dySnz4FRX8pSFiMilFiIil1qIiFxqISJyqS82mQc/RVdyyjx41ZWcMg8m82DqSqauZDIPpq7kp+pKJvNgh3kwdSWnzIOpKznRlewwD6auZOpKJvNg6kom82DqSnZ0JX+beTB1JTu6ksk8+KSFiMilFiIil1qIiFxqISJyqS/+g67k08yDU13JO+bB1JXs6Eom82AyD3Z0JTvMgx1dyWQenDAPpq7kVFdyqiuZzIO/rSuZzIOpKznVlewwD36CruRfshARudRCRORSCxGRSy1ERC71xcPMg1NdyZPMg6krecc8mLqSHV3JZB5MXckO8+BJXcnfZh78FObBq65kMg+mrmQyD3aYB6fMg6kr+QnMg+9gHkxdyYmFiMilFiIil1qIiFxqISJyqS/+R3QlO8yDV13JZB6cMg+mruRJXckO82DqSk50JZN5sKMrmcyDqSuZzIPJPNhhHjzFPJi6kieZB1NXMpkHp7qSd8yDqSuZzIMnmQdTV7LDPJi6kncWIiKXWoiIXGohInKphYjIpb6QLebB1JVMXckO82DqSqauZDIPfqquZDIPTnUlO8yDp3QlO8yDHV3JZB5MXcmOrmSHeTCZB6+6kqkr2dGVTObBp5kHU1dyYiEicqmFiMilFiIil1qIiFzqi4d1Jf8S82DqSibzYDIPdnQlU1cymQc7upLJPJi6ksk8eNWVfFpXcso8mLqSqSuZzIOpK3nHPJi6kqkreZJ5MHUlk3mwoyt5xzyYupLJPJi6kqkr+ZcsREQutRARudRCRORSCxGRS/36/QcbzIOfois5ZR686kpOmQdTV/JTmAdTV/LKPJi6ksk82NGVTObB1JV8B/Pgna5kh3nwpK5kMg+mruQp5sGOruSUebCjK9lhHuzoSt5ZiIhcaiEicqmFiMilFiIil/r1+w9ERC60EBG51EJE5FILEZFLLURELrUQEbnUQkTkUgsRkUstREQu9X/Mc56PbpTl6QAAAABJRU5ErkJggg==",
         "bankId": "ICB",
         "bankAccount": "0763644017",
         "accountName": "TAP TAKE GO STORE_THANG",
-        "amount": 51000,
-        "content": "TTG9276"
+        "amount": 15000,
+        "content": "TTG4990"
       }
     },
     {
-      "_id": "cart_mw8w61y6_773w",
-      "order_code": "TTG8540",
-      "user_id": "usr_mw8vltc0",
-      "customer_name": "khachhang2",
-      "phone_number": "1111111111",
-      "rfid_card_id": "RFID_9F93A",
-      "items": [
-        {
-          "product_id": "prod_001",
-          "sku": "BEV-COCA-330",
-          "name": "Coca Cola Sleek 330ml",
-          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
-          "price": 12000,
-          "weight_per_unit": 390,
-          "quantity": 1,
-          "subtotal": 12000
-        },
-        {
-          "product_id": "prod_002",
-          "sku": "BEV-REDBULL-250",
-          "name": "Nước tăng lực Red Bull 250ml",
-          "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
-          "price": 15000,
-          "weight_per_unit": 280,
-          "quantity": 1,
-          "subtotal": 15000
-        },
-        {
-          "product_id": "prod_003",
-          "sku": "SNK-LAYS-060",
-          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
-          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
-          "price": 16000,
-          "weight_per_unit": 65,
-          "quantity": 1,
-          "subtotal": 16000
-        },
-        {
-          "product_id": "prod_004",
-          "sku": "BEV-AQUA-500",
-          "name": "Nước khoáng thiên nhiên Aquafina 500ml",
-          "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80",
-          "price": 8000,
-          "weight_per_unit": 520,
-          "quantity": 1,
-          "subtotal": 8000
-        }
-      ],
-      "total_amount": 51000,
+      "_id": "cart_mwbvsr9r_apnh",
+      "order_code": "TTG8278",
+      "user_id": "usr_mw906och",
+      "customer_name": "viet",
+      "phone_number": "0358391749",
+      "rfid_card_id": "RFID_E2AC8",
+      "items": [],
+      "total_amount": 0,
       "status": "Completed",
-      "created_at": "2026-11-09T06:40:04.446Z",
-      "updated_at": "2026-11-09T06:41:01.464Z",
+      "created_at": "2026-11-11T08:53:02.607Z",
+      "updated_at": "2026-11-11T08:56:44.358Z",
       "vietQR": {
-        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=51000&addInfo=TTG8540&accountName=TAP%20TAKE%20GO%20STORE_THANG",
-        "base64QR": "data:image/png;base64,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",
+        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=0&addInfo=TTG8278&accountName=TAP%20TAKE%20GO%20STORE_THANG",
+        "base64QR": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAUAAAAFACAYAAADNkKWqAAAAAklEQVR4AewaftIAABW5SURBVO3BwZFcy65lwcWw0gNzyADxIQPmkISfs7aGxSCYJ29W8cV2//X7D0RELrQQEbnUQkTkUgsRkUstREQutRARudRCRORSCxGRSy1ERC61EBG51EJE5FJf/AXz4KfpSt7NPJi6kifMg6krmcyDU13JZB480ZWcMA+mrmTHPJi6khPmwU5X8irz4Imu5AnzYOpKJvNgpyuZzIN360pOmAc/TVdyYiEicqmFiMilFiIil1qIiFzqi4e6kk8wD54wD54wD050JU90JZN5cKormcyDqSs5ZR58l67kCfNg6kpOmQcnzIOdruRVXcmOeTB1JZN5MHUlO+bBu3Uln2AevGohInKphYjIpRYiIpdaiIhc6ov/gHnwRFfyhHkwdSWTebDTlfwLzIOpK5m6ksk82OlKTnQlk3mw05VM5sHUlTxhHkxdyWQefKeuZDIPnjAPTpgH38k8eKIreaeFiMilFiIil1qIiFxqISJyqYWIyKW+kLcyD06ZB090JSfMg6kr2TEPTpgHU1eyYx5MXckT5sGrupInzINT5sHUlXxCV3LKPLjRQkTkUgsRkUstREQutRARudQX/4O6ksk8mLqSHfNg6kom82DqSp4wD06ZB1NXMnUlk3lwqis5YR6cMg8+wTyYupJT5sEndCWnzIOpK5G/txARudRCRORSCxGRSy1ERC71xX+gK/lpupLJPNjpSibzYOpKTpkHr+pKdsyDd+tK3q0reZV5sNOVTObBCfPgVFdywjx4N/PglHkwdSWTebDTlXxCV/KTLERELrUQEbnUQkTkUgsRkUt98ZB58NOYB1NX8gnmwU5XMpkHU1cymQc7XclkHkxdyRPmwdSVPGEeTF3Ju3Ulk3mw05VM5sHUlZzqSibzYOpKTnUlk3nwbubB1JWcMg9+uoWIyKUWIiKXWoiIXGohInKphYjIpX79/gP5/5gHn9CVnDAPdrqSyTw40ZXsmAdTVzKZB6e6kleZBztdyavMgye6klPmwYmu5Anz4ERXsmMeTF3J/7qFiMilFiIil1qIiFxqISJyqV+//+BDzIMTXclkHpzqSn4a82DqSp4wDz6hKzlhHvw0XclkHux0JZN58G5dyWQenOpKTpgH79aVvJt5cKoreaeFiMilFiIil1qIiFxqISJyqV+//+AB82DqSk6ZBye6klPmwbt1Je9mHpzoSn4a8+BUVzKZB1NX8oR5MHUlk3mw05VM5sEndCWnzIOpKzlhHux0JSfMg5+mK3nVQkTkUgsRkUstREQutRARudSv33/wgHkwdSU75sHUlUzmwXfqSk6YB1NX8m7mwamuZDIPpq5kxzw40ZVM5sG7dSXvZh6c6kpOmAc7XcmrzINTXclkHkxdyY558KquZMc8mLqSE+bBTlfyTgsRkUstREQutRARudRCRORSCxGRS33xUFdyqit5VVfybubBjnkwdSUnzIOdruSEefCv6kp2zIOpK3k382DqSk51JZN58IR5MHUlT3Qlk3kwdSWTefBu5sET5sHUleyYB1NX8qqFiMilFiIil1qIiFxqISJyqS/+gnlwoivZMQ9eZR7sdCWTefBEV/KqruSUeTB1JafMg8k8mLqSyTzY6UrerSt5lXlwqis50ZWc6kom82DqSnbMg5+kK9kxD050JZN5sNOVTObB1JWc6kreaSEicqmFiMilFiIil1qIiFzqi7/QlTzRlZwwD6au5FRXMpkHp8yDqSt5wjw4YR5MXclOVzKZB+9mHpzoSnbMg3frSl5lHjzRlUzmwU5X8qqu5FO6khPmwRNdyQnz4Imu5MRCRORSCxGRSy1ERC61EBG51BcPmQdTV7JjHrzKPNjpSibzYOpKnjAPpq7kia7kCfPg3cyDqSuZzIPJPDjVlbybefBEVzKZB59gHkxdyY55MHUlT5gHJ7qSJ8yDJ7qSd1qIiFxqISJyqYWIyKUWIiKXWoiIXOqLv2AeTF3JZB68W1eyYx5MXckJ8+DdzIOdrmQyD050JZ/SlUzmwSeYB090JZN58G7mwXfqSibzYOpKTnUlJ8yDJ7qSE+bBjnlwois5sRARudRCRORSCxGRSy1ERC71xQd1JZN5cMI82OlKXtWV7JgHJ8yDJ7qSJ7qSV3UlO+bBq7qS72QeTF3JZB78NF3JZB7sdCVTV/KEefAv6EreaSEicqmFiMilFiIil1qIiFzqi7/QlUzmwdSV7JgHU1cymQdTV3LKPJi6klNdyWQeTF3JZB7smAcnupJT5sEndCWTefCEeTB1JU+YB5N5MHUlT3Qlp8yDqSuZzIOpK9kxD6auZDIPTnUlrzIPTpkHU1fyhHkwdSUnFiIil1qIiFxqISJyqYWIyKW++AvmwdSVTObBE13JZB7sdCVTV3LCPDjVlUzmwdSVPGEenOpKTpgHT5gHJ8yDU13JZB480ZVM5sFkHux0JVNXMpkHU1ey05VM5sHUlZzqSl7VleyYBzdaiIhcaiEicqmFiMilFiIil1qIiFzq1+8/eMA8mLqSHfPgRFfyncyDE13Ju5kH79aVTObBTlcymQdPdCUnzIOpK9kxD050JU+YB1NXMpkHO13JZB5MXckp82DqSt7NPJi6ksk8eKIrecI8mLqSEwsRkUstREQutRARudRCRORSXzzUlXyCebDTlbxbVzKZB5N5cKorOdGVTObBTlfyLzAPXmUe7HQlk3kwmQdTV7JjHryqK9kxD/4F5sEJ82DqSp4wD6auZMc8eKeFiMilFiIil1qIiFxqISJyqV+//+AB8+ATupId8+BEVzKZBztdyQnzYOpK3s08ONWVfIJ5MHUlO+bB1JWcMA+e6EqeMA+mruSUeTB1JU+YBye6ksk82OlKJvPgRFdyyjyYupLJPNjpSt5pISJyqYWIyKUWIiKXWoiIXOqLh7qSU+bB1JWcMA+eMA+mrmTHPJi6kifMg6krOdGV7JgHk3lwoiv5acyDqSvZMQ+mruSEebDTlUxdyQnzYKcreZV5sNOVTObBia5kxzyYupIT5sFOVzJ1JZN58IR5MHUlJxYiIpdaiIhcaiEicqmFiMilFiIil/riL5gHJ7qSd+tKPqUr+QTzYOpKTnUl72YeTF3JJ3Qlk3lwyjw40ZU8YR5MXckp82DqSk6ZB/8q82DqSibz4FRX8qqFiMilFiIil1qIiFxqISJyqS8e6kom8+CUefBEV3LCPJi6kh3z4ERXMpkHp7qSE+bBqa5kMg+eMA+mruTdzIOpK3k382CnKznRlUzmwU5XcsI8eKIrmcyDdzMPnuhKnjAPTnQlJxYiIpdaiIhcaiEicqmFiMilvvgLXckTXclkHkxdySnzYOpKpq7kia5kMg+mrmTHPDhhHkxdySnz4ERXcso8mMyDqSs5ZR6cMA9+GvNg6kp2zIOpK5nMg1NdyWQeTF3JZB6cMg+mruQ7dSXvtBARudRCRORSCxGRSy1ERC716/cfPGAenOpKJvPgE7qSyTx4oiuZzIOdruSEeTB1JafMgxt0JSfMg1NdyavMgye6ksk8ONWVvJt58AldyWQe7HQlk3kwdSUnFiIil1qIiFxqISJyqYWIyKUWIiKX+vX7D97MPHiiK3nCPPhpupLJPDjRlTxhHkxdySnz4Imu5FXmwad0JZN58ERX8gnmwSd0JU+YB090Je+0EBG51EJE5FILEZFLLURELvXFB3Ulk3lwwjzY6UpOdCXvZh5MXcmOefBu5sHUlTxhHkxdyWQePGEeTF3Ju3UlT3Qlk3lwyjyYupIT5sETXckT5sEJ82CnK3lVV3LKPJi6khMLEZFLLURELrUQEbnUQkTkUl/8BfPgu3QlT5gHU1dyyjz4hK7k3bqSU13JJ3Qln2AefEJXsmMeTObB1JWc6kom8+C7dCVPdCWTebDTlUxdyasWIiKXWoiIXGohInKphYjIpb74C13JJ5gH79aVnDIPpq7khHmw05V8gnnwRFcymQdPmAfv1pVM5sHUlXyCeXCqK5nMg6kreTfzYKcrOWEefCfzYOpKXrUQEbnUQkTkUgsRkUstREQutRARudQX/4iu5JR58G7mwbuZBye6kp2u5FXmwRNdyRPmwRPmwbuZB1NXMpkHT5gHT5gHU1fyhHkwdSUnzIOdruSEeXCqK5nMg6krObEQEbnUQkTkUgsRkUstREQu9cVfMA+mrmQyD051JSfMg1NdyQnz4Dt1JSfMg5/GPDjVlbxbV/JuXclkHkxdySnzYOpKJvNgMg92upJ360om82DqSqau5N26kh3z4J0WIiKXWoiIXGohInKphYjIpb54yDw41ZW8qis5ZR5MXcnUleyYB1NX8m7mwa26kifMg6krmcyDqSvZMQ9eZR6cMg+eMA+mruREV/Ju5sGprmTqSibz4BMWIiKXWoiIXGohInKphYjIpb74C13JCfPglHnwCebBqa5kMg+mrmQyD3a6kqkrkf/HPJi6kp2uZDIPpq7kVFdywjyYupInzIOpK9kxD06YB1NXsmMevKor2TEPXtWV7JgH77QQEbnUQkTkUgsRkUstREQutRARudSv33/ww5gHU1eyYx68qivZMQ+mruQJ8+BVXcmOeTB1JSfMg39BV7JjHkxdyWQenOpKJvNg6kpOmQdTVzKZB6e6ksk8mLqSyTzY6Uo+wTyYupLJPDjVlbxqISJyqYWIyKUWIiKXWoiIXOrX7z84ZB6c6EqeMA9OdSWvMg92upIT5sGprmQyD96tK5nMg6krOWUeTF3JZB6c6kom8+DdupJT5sEndCWTefBuXckT5sG/qis5sRARudRCRORSCxGRSy1ERC71xUNdyWQenOpKpq7klHkwdSUnupLv1JWcMA92upJXmQenupLJPJi6knfrSj6lK5nMg0/oSibzYKcreZV5sNOVTF3JCfNgpyuZzIMnupLJPHjVQkTkUgsRkUstREQutRARudQXf6ErmcyDTzAPTpkHJ7qSJ7qSU+bB1JVM5sET5sETXclkHrybeTB1JZN5sNOVTObB1JVM5sFOVzJ1JZN5MHUlO+bBJ5gHU1dyyjyYupITXcm/aiEicqmFiMilFiIil1qIiFxqISJyqS8+qCuZzIOpK5m6klPmwbuZB5/QlUzmwbt1JU90JafMgxPmwSnz4IR5cMo8eJV5sNOVTObBia5kxzz4BPNg6kom82CnK3lVV7JjHrzTQkTkUgsRkUstREQutRARudSv339wyDw40ZWcMg/erSt5wjyYupJPMA9OdSUnzINTXckJ8+DdupJT5sGJrmQyD3a6ksk8ONGV7JgHP0lXcso8+Bd0Ja9aiIhcaiEicqmFiMilFiIil/rioa5kMg9OdSWTeTB1JTvmwQnzYOpKdrqSyTyYupLJPNjpSibz4Anz4ERXMpkHp8yDn6YreVVXsmMenOhK3q0recI8mLqSyTx4oit5wjw40ZXsmAeTeTB1JScWIiKXWoiIXGohInKphYjIpb74D3Qlp8yDqSuZzINT5sEJ8+AJ8+DdupLJPPgU82DqSibzYOpKdsyDqSs5YR480ZVM5sFOV3LCPDjVlXwX8+ATzINTXckJ8+BUV/KqhYjIpRYiIpdaiIhcaiEicqmFiMilvnjIPJi6knfrSnbMg6krmcyDU13JCfPgO3Ulr+pKnuhKJvPgX9CV7JgHJ7qSyTz4FPNg6kpOmAenupITXckT5sHUlZwyD6au5MRCRORSCxGRSy1ERC61EBG51BcPdSWTefBu5sFOV/IJ5sGJruRTzIMTXclkHux0JSfMg1NdyWQeTF3Jqa7kE7qSyTyYupInzINTXckJ82DqSnbMg8k8ONGVvJt5sNOVvNNCRORSCxGRSy1ERC61EBG51Bd/oSuZzIOpK9kxD6auZDIPpq5kxzyYupJ360om8+CUeTB1JZN5MHUlO+bB1JU8YR5MXcnUlUzmwY55MHUlk3kwdSU75sGrupJT5sHUlUzmwU5XMpkHU1dyyjw40ZVM5sFOV/Ju5sGrupJPWIiIXGohInKphYjIpRYiIpf69fsPDpkHU1cymQc7XckJ8+BUV/KTmAc7XclkHnyXrmTHPDjRlZwyD6auZDIPpq7klHkwdSWnzIMTXckp82DqSk6YBztdyWQePNGVvMo8ONWVTObBu3UlJxYiIpdaiIhcaiEicqmFiMilFiIil/r1+w8OmQef0JX8NObB1JW8m3lwqiv5BPPgia7kVebBTlfyCebBE13JdzEPpq5kxzw40ZVM5sETXckp8+BEV3JiISJyqYWIyKUWIiKXWoiIXOrX7z/4B5gHP01XMpkHO13JZB5MXckT5sG7dSUnzINP6UpOmAdPdCWTeTB1JafMg6krmcyDU13Ju5kH36Ur+YSFiMilFiIil1qIiFxqISJyqS/+EV3JKfPgRFeyYx5MXclkHjzRlTxhHpzoSk6ZB+/WlbzKPNgxD6au5ERXcso8mLqSU+bB1JVM5sHUlZwyD6au5N26kifMgxPmwamu5FULEZFLLURELrUQEbnUQkTkUl/8BfPgp+lKXmUe7HQlk3lwoit5wjyYupKdruSEeTB1JTtdyQnz4AnzYOpKTnUlJ7qSyTzY6UpOmAdTV3LKPDhhHux0JVNXMpkHU1fybubBTlfybl3JOy1ERC61EBG51EJE5FILEZFLLURELvXFQ13JJ5gHp7qSyTyYupJTXclkHkzmwU5XMpkHU1cymQenupJ3Mw+mrmQyD051JU+YB+9mHkxdyQnzYKcreZV5sGMevMo82OlKXtWVPNGVfJeFiMilFiIil1qIiFxqISJyqS/+A+bBE13JE+bB1JVM5sFOVzKZB1NXcso8eLeuZDIPTpgHO13J1JVM5sEp8+DdupLJPJi6klPmwWQe/DRdyQnz4JR5cMI8+ATz4Imu5MRCRORSCxGRSy1ERC61EBG51BeXMA+mrmTHPDhhHjzRlZzoSk51JSfMgye6ksk82OlKTpgHp8yDE+bB1JU80ZWcMg9e1ZXsmAdTV3KiKzllHkxdySnzYOpKJvNg6ko+YSEicqmFiMilFiIil1qIiFzqi/9BXclP05VM5sHUlZwyD050JU+YBz9NV/Iq82CnK3m3ruQTzIMT5sFOVzJ1JZN5cKormcyDJ8yDE13JiYWIyKUWIiKXWoiIXGohInKphYjIpb74D3QlP415MHUlO13JCfNg6krezTzY6Uq+S1dyyjw40ZWcMg++i3lwqiv5Ll3JZB7smAef0JX8JAsRkUstREQutRARudRCRORSXzxkHvyrzINTXcnUlUzmwU5XMnUlk3kwdSVPmAdTV7JjHkxdyWQenOpKJvNgMg9OdSU/SVdyyjyYupLJPNjpSibz4N26ksk8mLqSHfNg6kqe6EreaSEicqmFiMilFiIil1qIiFzq1+8/EBG50EJE5FILEZFLLURELrUQEbnUQkTkUgsRkUstREQutRARudRCRORS/wd1jgfc/KTyUgAAAABJRU5ErkJggg==",
         "bankId": "ICB",
         "bankAccount": "0763644017",
         "accountName": "TAP TAKE GO STORE_THANG",
-        "amount": 51000,
-        "content": "TTG8540"
+        "amount": 0,
+        "content": "TTG8278"
       }
     },
     {
-      "_id": "cart_mw8w7kcf_d6tm",
-      "order_code": "TTG1207",
-      "user_id": "usr_mw8vltc0",
-      "customer_name": "khachhang2",
-      "phone_number": "1111111111",
-      "rfid_card_id": "RFID_9F93A",
+      "_id": "cart_mwbw6jgl_um7b",
+      "order_code": "TTG9068",
+      "user_id": "usr_mw906och",
+      "customer_name": "viet",
+      "phone_number": "0358391749",
+      "rfid_card_id": "RFID_E2AC8",
       "items": [
         {
           "product_id": "prod_002",
@@ -258,95 +239,9 @@
           "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
           "price": 15000,
           "weight_per_unit": 280,
-          "quantity": 1,
-          "subtotal": 15000
-        },
-        {
-          "product_id": "prod_003",
-          "sku": "SNK-LAYS-060",
-          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
-          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
-          "price": 16000,
-          "weight_per_unit": 65,
           "quantity": 2,
-          "subtotal": 32000
+          "subtotal": 30000
         },
-        {
-          "product_id": "prod_004",
-          "sku": "BEV-AQUA-500",
-          "name": "Nước khoáng thiên nhiên Aquafina 500ml",
-          "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80",
-          "price": 8000,
-          "weight_per_unit": 520,
-          "quantity": 1,
-          "subtotal": 8000
-        }
-      ],
-      "total_amount": 55000,
-      "status": "Completed",
-      "created_at": "2026-11-09T06:41:14.943Z",
-      "updated_at": "2026-11-09T06:41:31.068Z",
-      "vietQR": {
-        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=55000&addInfo=TTG1207&accountName=TAP%20TAKE%20GO%20STORE_THANG",
-        "base64QR": "data:image/png;base64,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",
-        "bankId": "ICB",
-        "bankAccount": "0763644017",
-        "accountName": "TAP TAKE GO STORE_THANG",
-        "amount": 55000,
-        "content": "TTG1207"
-      }
-    },
-    {
-      "_id": "cart_mw8w86eq_pvt8",
-      "order_code": "TTG8453",
-      "user_id": "usr_mw8uv4tp",
-      "customer_name": "khachhang1",
-      "phone_number": "0763644017",
-      "rfid_card_id": "RFID_8CFFE",
-      "items": [
-        {
-          "product_id": "prod_001",
-          "sku": "BEV-COCA-330",
-          "name": "Coca Cola Sleek 330ml",
-          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
-          "price": 12000,
-          "weight_per_unit": 390,
-          "quantity": 1,
-          "subtotal": 12000
-        },
-        {
-          "product_id": "prod_002",
-          "sku": "BEV-REDBULL-250",
-          "name": "Nước tăng lực Red Bull 250ml",
-          "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
-          "price": 15000,
-          "weight_per_unit": 280,
-          "quantity": 1,
-          "subtotal": 15000
-        }
-      ],
-      "total_amount": 27000,
-      "status": "Checkout_Pending",
-      "created_at": "2026-11-09T06:41:43.538Z",
-      "updated_at": "2026-11-09T06:48:24.512Z",
-      "vietQR": {
-        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=27000&addInfo=TTG8453&accountName=TAP%20TAKE%20GO%20STORE_THANG",
-        "base64QR": "data:image/png;base64,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",
-        "bankId": "ICB",
-        "bankAccount": "0763644017",
-        "accountName": "TAP TAKE GO STORE_THANG",
-        "amount": 27000,
-        "content": "TTG8453"
-      }
-    },
-    {
-      "_id": "cart_mw8w8gse_yrfm",
-      "order_code": "TTG7954",
-      "user_id": "usr_mw8vltc0",
-      "customer_name": "khachhang2",
-      "phone_number": "1111111111",
-      "rfid_card_id": "RFID_9F93A",
-      "items": [
         {
           "product_id": "prod_003",
           "sku": "SNK-LAYS-060",
@@ -356,34 +251,249 @@
           "weight_per_unit": 65,
           "quantity": 1,
           "subtotal": 16000
-        },
-        {
-          "product_id": "prod_004",
-          "sku": "BEV-AQUA-500",
-          "name": "Nước khoáng thiên nhiên Aquafina 500ml",
-          "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80",
-          "price": 8000,
-          "weight_per_unit": 520,
-          "quantity": 1,
-          "subtotal": 8000
         }
       ],
-      "total_amount": 24000,
-      "status": "Checkout_Pending",
-      "created_at": "2026-11-09T06:41:56.990Z",
-      "updated_at": "2026-11-09T06:48:42.659Z",
+      "total_amount": 46000,
+      "status": "Completed",
+      "created_at": "2026-11-11T09:03:45.669Z",
+      "updated_at": "2026-11-11T09:27:38.776Z",
       "vietQR": {
-        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=24000&addInfo=TTG7954&accountName=TAP%20TAKE%20GO%20STORE_THANG",
-        "base64QR": "data:image/png;base64,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",
+        "vietQrUrl": "https://img.vietqr.io/image/ICB-0763644017-compact2.png?amount=46000&addInfo=TTG9068&accountName=TAP%20TAKE%20GO%20STORE_THANG",
+        "base64QR": "data:image/png;base64,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",
         "bankId": "ICB",
         "bankAccount": "0763644017",
         "accountName": "TAP TAKE GO STORE_THANG",
-        "amount": 24000,
-        "content": "TTG7954"
+        "amount": 46000,
+        "content": "TTG9068"
       }
     }
   ],
   "orders": [
+    {
+      "_id": "ord_mwbx1994",
+      "order_code": "TTG9068",
+      "user_id": "usr_mw906och",
+      "customer_name": "viet",
+      "phone_number": "0358391749",
+      "rfid_card_id": "RFID_E2AC8",
+      "items": [
+        {
+          "product_id": "prod_002",
+          "sku": "BEV-REDBULL-250",
+          "name": "Nước tăng lực Red Bull 250ml",
+          "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
+          "price": 15000,
+          "weight_per_unit": 280,
+          "quantity": 2,
+          "subtotal": 30000
+        },
+        {
+          "product_id": "prod_003",
+          "sku": "SNK-LAYS-060",
+          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
+          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
+          "price": 16000,
+          "weight_per_unit": 65,
+          "quantity": 1,
+          "subtotal": 16000
+        }
+      ],
+      "total_amount": 46000,
+      "paid_amount": 46000,
+      "payment_status": "Completed",
+      "payment_method": "VietQR / SePay",
+      "transaction_id": "TXN_1794389258776",
+      "transaction_date": "2026-11-11T09:27:38.776Z",
+      "created_at": "2026-11-11T09:27:38.776Z"
+    },
+    {
+      "_id": "ord_mwbvxidi",
+      "order_code": "TTG8278",
+      "user_id": "usr_mw906och",
+      "customer_name": "viet",
+      "phone_number": "0358391749",
+      "rfid_card_id": "RFID_E2AC8",
+      "items": [],
+      "total_amount": 0,
+      "paid_amount": 0,
+      "payment_status": "Completed",
+      "payment_method": "VietQR / SePay",
+      "transaction_id": "TXN_1794387404358",
+      "transaction_date": "2026-11-11T08:56:44.358Z",
+      "created_at": "2026-11-11T08:56:44.358Z"
+    },
+    {
+      "_id": "ord_mwad2l87",
+      "order_code": "TTG3351",
+      "user_id": "usr_mwaczbi5",
+      "customer_name": "vcl",
+      "phone_number": "0905778899",
+      "rfid_card_id": "vcl",
+      "items": [
+        {
+          "product_id": "prod_003",
+          "sku": "SNK-LAYS-060",
+          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
+          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
+          "price": 16000,
+          "weight_per_unit": 65,
+          "quantity": 15,
+          "subtotal": 240000
+        }
+      ],
+      "total_amount": 240000,
+      "paid_amount": 240000,
+      "payment_status": "Refunded",
+      "payment_method": "VietQR / SePay",
+      "transaction_id": "TXN_1794295262455",
+      "transaction_date": "2026-11-10T07:21:02.455Z",
+      "created_at": "2026-11-10T07:21:02.455Z",
+      "refund_reason": "Khách khiếu nại thao tác nhầm trên kệ",
+      "refunded_at": "2026-11-10T07:21:52.869Z"
+    },
+    {
+      "_id": "ord_mwad1d0d",
+      "order_code": "TTG2175",
+      "user_id": "usr_mwaczbi5",
+      "customer_name": "vcl",
+      "phone_number": "0905778899",
+      "rfid_card_id": "vcl",
+      "items": [
+        {
+          "product_id": "prod_002",
+          "sku": "BEV-REDBULL-250",
+          "name": "Nước tăng lực Red Bull 250ml",
+          "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
+          "price": 15000,
+          "weight_per_unit": 280,
+          "quantity": 1,
+          "subtotal": 15000
+        },
+        {
+          "product_id": "prod_001",
+          "sku": "BEV-COCA-330",
+          "name": "Coca Cola Sleek 330ml",
+          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
+          "price": 12000,
+          "weight_per_unit": 390,
+          "quantity": 66,
+          "subtotal": 792000
+        }
+      ],
+      "total_amount": 807000,
+      "paid_amount": 807000,
+      "payment_status": "Completed",
+      "payment_method": "VietQR / SePay",
+      "transaction_id": "TXN_1794295205148",
+      "transaction_date": "2026-11-10T07:20:05.148Z",
+      "created_at": "2026-11-10T07:20:05.149Z"
+    },
+    {
+      "_id": "ord_mw9081ek",
+      "order_code": "TTG1466",
+      "user_id": "usr_mw906fsg",
+      "customer_name": "Phạm Hoàng Giang",
+      "phone_number": "0384141681",
+      "rfid_card_id": "RFID_772DA",
+      "items": [
+        {
+          "product_id": "prod_004",
+          "sku": "BEV-AQUA-500",
+          "name": "Nước khoáng thiên nhiên Aquafina 500ml",
+          "image": "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=400&auto=format&fit=crop&q=80",
+          "price": 8000,
+          "weight_per_unit": 520,
+          "quantity": 1,
+          "subtotal": 8000
+        },
+        {
+          "product_id": "prod_003",
+          "sku": "SNK-LAYS-060",
+          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
+          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
+          "price": 16000,
+          "weight_per_unit": 65,
+          "quantity": 1,
+          "subtotal": 16000
+        },
+        {
+          "product_id": "prod_002",
+          "sku": "BEV-REDBULL-250",
+          "name": "Nước tăng lực Red Bull 250ml",
+          "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
+          "price": 15000,
+          "weight_per_unit": 280,
+          "quantity": 4,
+          "subtotal": 60000
+        },
+        {
+          "product_id": "prod_001",
+          "sku": "BEV-COCA-330",
+          "name": "Coca Cola Sleek 330ml",
+          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
+          "price": 12000,
+          "weight_per_unit": 390,
+          "quantity": 2,
+          "subtotal": 24000
+        }
+      ],
+      "total_amount": 108000,
+      "paid_amount": 108000,
+      "payment_status": "Refunded",
+      "payment_method": "VietQR / SePay",
+      "transaction_id": "TXN_1794213215516",
+      "transaction_date": "2026-11-09T08:33:35.516Z",
+      "created_at": "2026-11-09T08:33:35.516Z",
+      "refund_reason": "Khách khiếu nại thao tác nhầm trên kệ",
+      "refunded_at": "2026-11-09T08:37:07.848Z"
+    },
+    {
+      "_id": "ord_mw907v8d",
+      "order_code": "TTG9622",
+      "user_id": "usr_mw906och",
+      "customer_name": "viet",
+      "phone_number": "0358391749",
+      "rfid_card_id": "RFID_E2AC8",
+      "items": [
+        {
+          "product_id": "prod_002",
+          "sku": "BEV-REDBULL-250",
+          "name": "Nước tăng lực Red Bull 250ml",
+          "image": "https://images.unsplash.com/photo-1551024709-8f23befc6f87?w=400&auto=format&fit=crop&q=80",
+          "price": 15000,
+          "weight_per_unit": 280,
+          "quantity": 1,
+          "subtotal": 15000
+        },
+        {
+          "product_id": "prod_003",
+          "sku": "SNK-LAYS-060",
+          "name": "Snack Khoai Tây Lay's Tảo Biển 60g",
+          "image": "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=400&auto=format&fit=crop&q=80",
+          "price": 16000,
+          "weight_per_unit": 65,
+          "quantity": 1,
+          "subtotal": 16000
+        },
+        {
+          "product_id": "prod_001",
+          "sku": "BEV-COCA-330",
+          "name": "Coca Cola Sleek 330ml",
+          "image": "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80",
+          "price": 12000,
+          "weight_per_unit": 390,
+          "quantity": 1,
+          "subtotal": 12000
+        }
+      ],
+      "total_amount": 43000,
+      "paid_amount": 43000,
+      "payment_status": "Completed",
+      "payment_method": "VietQR / SePay",
+      "transaction_id": "TXN_1794213207517",
+      "transaction_date": "2026-11-09T08:33:27.517Z",
+      "created_at": "2026-11-09T08:33:27.517Z"
+    },
     {
       "_id": "ord_mw8w7ws2",
       "order_code": "TTG1207",
@@ -808,7 +918,17 @@
   "activeGate": {
     "entryGateOpen": false,
     "exitGateOpen": false,
-    "activeShopperId": "usr_mw8vltc0",
-    "lastEntryTime": "2026-11-09T06:41:56.990Z"
-  }
+    "activeShopperId": "usr_mw8uv4tp",
+    "lastEntryTime": "2026-11-11T09:05:22.045Z"
+  },
+  "physicalShelves": [
+    {
+      "id": "SHELF_01",
+      "name": "Kệ Hàng Số 1 (Gian Trưng Bày Chính)",
+      "description": "Kệ 3 tầng x 3 ô (9 vị trí cảm biến cân)",
+      "rows": 3,
+      "cols": 3,
+      "created_at": "2026-11-10T14:59:36.256Z"
+    }
+  ]
 }

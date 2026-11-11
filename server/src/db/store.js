@@ -77,6 +77,8 @@ const initialData = {
   shelfSlots: [
     {
       _id: 'slot_001',
+      shelf_id: 'SHELF_01',
+      slot_number: 1,
       slot_id: 'NODE_01',
       product_id: 'prod_001',
       current_total_weight: 3900, // 10 lon x 390g
@@ -86,6 +88,8 @@ const initialData = {
     },
     {
       _id: 'slot_002',
+      shelf_id: 'SHELF_01',
+      slot_number: 2,
       slot_id: 'NODE_02',
       product_id: 'prod_002',
       current_total_weight: 2800, // 10 lon x 280g
@@ -95,6 +99,8 @@ const initialData = {
     },
     {
       _id: 'slot_003',
+      shelf_id: 'SHELF_01',
+      slot_number: 3,
       slot_id: 'NODE_03',
       product_id: 'prod_003',
       current_total_weight: 650, // 10 gói x 65g
@@ -104,12 +110,24 @@ const initialData = {
     },
     {
       _id: 'slot_004',
+      shelf_id: 'SHELF_01',
+      slot_number: 4,
       slot_id: 'NODE_04',
       product_id: 'prod_004',
       current_total_weight: 5200, // 10 chai x 520g
       expected_unit_weight: 520,
       status: 'Active',
       last_updated: new Date().toISOString()
+    }
+  ],
+  physicalShelves: [
+    {
+      id: 'SHELF_01',
+      name: 'Kệ Hàng Số 1 (Gian Trưng Bày Chính)',
+      description: 'Kệ 3 tầng x 3 ô (9 vị trí cảm biến cân)',
+      rows: 3,
+      cols: 3,
+      created_at: new Date('2026-11-01T00:00:00Z').toISOString()
     }
   ],
   virtualCarts: [],
@@ -166,6 +184,33 @@ class Store {
           if (u.is_in_store === undefined) u.is_in_store = false;
         });
 
+        // Ensure physicalShelves exists
+        if (!parsed.physicalShelves || !Array.isArray(parsed.physicalShelves) || parsed.physicalShelves.length === 0) {
+          parsed.physicalShelves = [
+            {
+              id: 'SHELF_01',
+              name: 'Kệ Hàng Số 1 (Gian Trưng Bày Chính)',
+              description: 'Kệ 3 tầng x 3 ô (9 vị trí cảm biến cân)',
+              rows: 3,
+              cols: 3,
+              created_at: new Date('2026-11-01T00:00:00Z').toISOString()
+            }
+          ];
+        }
+
+        // Ensure shelfSlots have shelf_id and slot_number (1 to 9)
+        if (!parsed.shelfSlots) parsed.shelfSlots = [];
+        const usedSlotNumbers = new Set();
+        parsed.shelfSlots.forEach((slot, idx) => {
+          if (!slot.shelf_id) slot.shelf_id = 'SHELF_01';
+          if (!slot.slot_number) {
+            let num = idx + 1;
+            while (num <= 9 && usedSlotNumbers.has(num)) num++;
+            slot.slot_number = num <= 9 ? num : idx + 1;
+          }
+          usedSlotNumbers.add(slot.slot_number);
+        });
+
         this.saveData(parsed);
         return parsed;
       }
@@ -178,10 +223,24 @@ class Store {
 
   saveData(dataToSave = this.data) {
     try {
+      if (this._saveTimer) {
+        clearTimeout(this._saveTimer);
+        this._saveTimer = null;
+      }
       fs.writeFileSync(DATA_FILE, JSON.stringify(dataToSave, null, 2), 'utf-8');
     } catch (err) {
       console.error('Error saving store.json:', err.message);
     }
+  }
+
+  saveDataDebounced(delayMs = 500) {
+    if (this._saveTimer) clearTimeout(this._saveTimer);
+    this._saveTimer = setTimeout(() => {
+      this._saveTimer = null;
+      fs.promises
+        .writeFile(DATA_FILE, JSON.stringify(this.data, null, 2), 'utf-8')
+        .catch((err) => console.error('Error saving store.json:', err.message));
+    }, delayMs);
   }
 
   async initMongo(uri) {
