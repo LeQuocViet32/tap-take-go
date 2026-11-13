@@ -132,18 +132,6 @@
   ],
   "shelfSlots": [
     {
-      "_id": "slot_mwbvvr1d_nmx",
-      "shelf_id": "SHELF_01",
-      "slot_number": 2,
-      "slot_id": "KH1_2",
-      "product_id": "prod_002",
-      "expected_unit_weight": 280,
-      "current_total_weight": 1400,
-      "last_stable_weight": 1400,
-      "status": "Active",
-      "last_updated": "2026-11-11T09:18:47.514Z"
-    },
-    {
       "_id": "slot_mwbvvvgx_lal",
       "shelf_id": "SHELF_01",
       "slot_number": 3,
@@ -154,18 +142,6 @@
       "last_stable_weight": 325,
       "status": "Active",
       "last_updated": "2026-11-11T09:18:51.488Z"
-    },
-    {
-      "_id": "slot_mwbwotxz_4xk",
-      "shelf_id": "SHELF_01",
-      "slot_number": 1,
-      "slot_id": "KH1_1",
-      "product_id": "prod_001",
-      "expected_unit_weight": 390,
-      "current_total_weight": 2730,
-      "last_stable_weight": 2730,
-      "status": "Active",
-      "last_updated": "2026-11-11T09:18:14.423Z"
     }
   ],
   "virtualCarts": [

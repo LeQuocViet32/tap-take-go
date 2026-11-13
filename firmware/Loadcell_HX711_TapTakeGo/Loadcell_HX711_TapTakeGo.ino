@@ -1,3 +1,27 @@
+/*
+ * ================================================================
+ *  TAP TAKE GO - HE THONG 2 CAN LOADCELL + OLED (ESP32 DevKit V1)
+ *  Phien ban on dinh (FINAL)
+ * ================================================================
+ *  DAU DAY:
+ *   HX711 #1 (Can 1 - KH1_1): DT -> GPIO16, SCK -> GPIO17
+ *   HX711 #2 (Can 2 - KH1_2): DT -> GPIO25, SCK -> GPIO26
+ *   OLED I2C 128x64 (SH1106): SDA -> GPIO21, SCL -> GPIO22
+ *   VCC cua 2 HX711 -> 3V3 (hoac 5V/VIN), GND chung voi ESP32
+ *   OLED VCC -> 3V3, GND -> GND
+ *
+ *  LENH SERIAL (115200 baud, chon "New Line"):
+ *   t        : Tru bi ca 2 can
+ *   t1 / t2  : Tru bi rieng can 1 / can 2
+ *   c1 500   : Hieu chuan can 1 voi qua chuan 500g (dat vat len truoc)
+ *   c2 500   : Hieu chuan can 2 voi qua chuan 500g
+ *   r        : Reset he so hieu chuan ve mac dinh
+ *   i        : In thong tin trang thai
+ *
+ *  THU VIEN CAN CAI: "HX711 Arduino Library" (Bogdan Necula), "U8g2"
+ * ================================================================
+ */
+
 #include <Arduino.h>
 #include <Wire.h>
 #include <U8g2lib.h>
@@ -5,406 +29,398 @@
 #include <Preferences.h>
 #include <WiFi.h>
 #include <HTTPClient.h>
-#include <WiFiClientSecure.h>
 
 // ============================================================
-// 1. CAU HINH WIFI & SERVER TAP TAKE GO (SUA THEO MANG NHA BAN)
+// 1. CAU HINH
 // ============================================================
-const char* WIFI_SSID     = "11111111";
-const char* WIFI_PASSWORD = "homnaytest5";
+// Dat false neu chi dung cap USB (Web Serial) -> chay muot nhat
+#define USE_WIFI true
 
-// Chon 1 trong 2 dia chi Server:
-// - Qua Tailscale Funnel (khuyen dung khi WiFi la mang Public/truong hoc hoac khac mang):
-//     "https://qviet.tailb1dece.ts.net/api/shelves/sensor-reading"
-// - Cung mang WiFi noi bo (neu may tinh da mo cong 5000 trong Firewall):
-//     "http://10.103.4.146:5000/api/shelves/sensor-reading"
-const char* SERVER_URL    = "https://qviet.tailb1dece.ts.net/api/shelves/sensor-reading";
+const char* WIFI_SSID     = "Minh Hien";
+const char* WIFI_PASSWORD = "Khongbiet";
+const char* SERVER_URL    = "http://192.168.1.116:5000/api/shelves/sensor-reading";
 
-// Ma o can tren Web Admin (O 01 = KH1_1, O 02 = KH1_2, ...)
-const char* SHELF_SLOT_ID = "KH1_1";
+const char* SLOT_ID_1 = "KH1_1";
+const char* SLOT_ID_2 = "KH1_2";
 
-// --- CAU HINH CHAN GPIO (GIU NGUYEN PHAN CUNG CUA BAN) ---
-const int HX_DT      = 16;
-const int HX_SCK     = 17;
-const int BTN_TARE   = 4;
-const int BTN_SAMPLE = 5;
-const int I2C_SDA    = 21;
-const int I2C_SCL    = 22;
+const int HX1_DT  = 16;
+const int HX1_SCK = 17;
+const int HX2_DT  = 25;
+const int HX2_SCK = 26;
 
-// --- KHOI TAO DOI TUONG ---
+const int I2C_SDA = 21;
+const int I2C_SCL = 22;
+
+const float DEFAULT_CAL = 420.0;   // He so mac dinh (can hieu chuan lai)
+const float ZERO_BAND   = 1.0;     // |g| nho hon nguong nay -> hien 0
+const float STABLE_BAND = 1.5;     // Dao dong < 1.5g trong cua so -> on dinh
+
+// ============================================================
+// 2. DOI TUONG
+// ============================================================
+// Neu man hinh bi lech/nhoe chu, doi sang dong SSD1306 ben duoi:
 U8G2_SH1106_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
-HX711 scale;
+// U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, U8X8_PIN_NONE);
+
 Preferences prefs;
 
-// --- CAC BIEN HE THONG ---
-float calFactor = 420.0;
-float unitWeight = 0.0;
-float lastWeight = 0.0;
-bool isStable = false;
+// Gom moi thu cua 1 can vao 1 struct cho gon
+struct Scale {
+  HX711 hx;
+  int dt, sck;
+  const char* slot;
+  const char* name;
+  float cal;
+  bool  ready;           // Da nhan cam bien
+  float weight;          // Gia tri da loc (g)
+  bool  stable;
+  unsigned long lastSample;
+  float win[8];          // Cua so kiem tra on dinh
+  uint8_t winIdx;
+  uint8_t winCount;
+};
 
-// Bo loc truot khong block (1 mau/lan doc) giup phan hoi nhanh gap 5 lan
-float sampleBuf[3] = {0.0, 0.0, 0.0};
-int sampleIdx = 0;
-bool sampleWarm = false;
+Scale s1 = { HX711(), HX1_DT, HX1_SCK, SLOT_ID_1, "CAN 1", DEFAULT_CAL };
+Scale s2 = { HX711(), HX2_DT, HX2_SCK, SLOT_ID_2, "CAN 2", DEFAULT_CAL };
 
-// OLED state cache de tranh ve lai khong can thiet
-float lastOledGrams = -9999.0;
-int lastOledCount   = -1;
-bool lastOledStable = false;
-bool lastOledWifi   = false;
+// Du lieu chia se cho task WiFi (chay o core 0)
+volatile float sharedW1 = 0, sharedW2 = 0;
+volatile bool  sharedSt1 = true, sharedSt2 = true;
+volatile bool  sharedR1 = false, sharedR2 = false;
+volatile bool  wifiOk = false;
 
-unsigned long lastDrawTime   = 0;
-unsigned long lastSerialTime = 0;
-unsigned long lastHttpQueue  = 0;
-unsigned long lastWifiRetry  = 0;
-unsigned long lastBtnTare    = 0;
-unsigned long lastBtnSample  = 0;
-
-float lastSerialWeight = -9999.0;
-bool lastSerialStable  = false;
-float lastQueuedWeight = -9999.0;
-bool lastQueuedStable  = false;
-
-// Dong bo du lieu giua Core 1 (Cam bien) va Core 0 (Mang WiFi)
-portMUX_TYPE netMux = portMUX_INITIALIZER_UNLOCKED;
-volatile bool hasPendingNetPush = false;
-float pendingNetWeight = 0.0;
-int pendingNetPcs = 0;
-bool pendingNetStable = false;
-
-void drawMessage(const char *l1, const char *l2 = "") {
-  u8g2.clearBuffer();
-  u8g2.setFont(u8g2_font_ncenB10_tr);
-  u8g2.drawStr(0, 26, l1);
-  u8g2.drawStr(0, 52, l2);
-  u8g2.sendBuffer();
+// ============================================================
+// 3. KHOI TAO / PHAT HIEN CAM BIEN (KHONG BAO GIO TREO)
+// ============================================================
+// Keo SCK xuong LOW de danh thuc HX711 (SCK HIGH > 60us = HX711 ngu!)
+void prepPins(Scale& s) {
+  pinMode(s.sck, OUTPUT);
+  digitalWrite(s.sck, LOW);
+  pinMode(s.dt, INPUT_PULLUP);  // Khong cam -> DT luon HIGH
 }
 
-void drawDisplay(float grams, int count, bool stable) {
-  u8g2.clearBuffer();
-
-  u8g2.setFont(u8g2_font_5x8_tr);
-  u8g2.drawStr(18, 10, "GRAM");
-  u8g2.drawStr(76, 10, "SO LUONG");
-  u8g2.drawHLine(0, 13, 128);
-
-  u8g2.drawVLine(64, 0, 64);
-
-  char bufGram[16];
-  snprintf(bufGram, sizeof(bufGram), "%.1f", grams);
-  u8g2.setFont(u8g2_font_ncenB12_tr);
-  int wG = u8g2.getStrWidth(bufGram);
-  u8g2.drawStr((62 - wG) / 2, 38, bufGram);
-
-  u8g2.setFont(u8g2_font_6x12_tr);
-  u8g2.drawStr(26, 58, "g");
-
-  char bufPcs[16];
-  snprintf(bufPcs, sizeof(bufPcs), "%d", count);
-  u8g2.setFont(u8g2_font_ncenB12_tr);
-  int wC = u8g2.getStrWidth(bufPcs);
-  u8g2.drawStr(66 + (60 - wC) / 2, 38, bufPcs);
-
-  u8g2.setFont(u8g2_font_6x12_tr);
-  u8g2.drawStr(86, 58, "pcs");
-
-  if (stable && grams > 0.5) {
-    u8g2.drawDisc(4, 6, 2);
+// Cho toi da timeoutMs de DT xuong LOW (HX711 bao co du lieu)
+bool waitDtLow(Scale& s, unsigned long timeoutMs) {
+  unsigned long t0 = millis();
+  while (millis() - t0 < timeoutMs) {
+    if (digitalRead(s.dt) == LOW) return true;
+    delay(2);
   }
-  if (WiFi.status() == WL_CONNECTED) {
-    u8g2.drawDisc(123, 6, 2); // Cham goc phai bao hieu da ket noi WiFi
-  }
-
-  u8g2.sendBuffer();
+  return false;
 }
 
-void connectWiFiInitial() {
-  if (strcmp(WIFI_SSID, "TEN_WIFI_CUA_BAN") == 0 || strlen(WIFI_SSID) == 0) {
-    Serial.println("{\"info\":\"Chua cau hinh WiFi, chay che do USB Serial\"}");
+void resetFilter(Scale& s) {
+  s.weight = 0;
+  s.stable = true;
+  s.winIdx = 0;
+  s.winCount = 0;
+}
+
+void activate(Scale& s) {
+  s.hx.begin(s.dt, s.sck);   // An toan vi DT da san sang
+  s.hx.set_scale(s.cal);
+  s.hx.tare(5);
+  resetFilter(s);
+  s.ready = true;
+  s.lastSample = millis();
+}
+
+// ============================================================
+// 4. DOC + LOC NHIEU (goi lien tuc trong loop, khong chan)
+// ============================================================
+void updateScale(Scale& s) {
+  if (!s.ready) {
+    // Cam nong: neu vua cam day vao -> tu kich hoat
+    if (digitalRead(s.dt) == LOW) {
+      activate(s);
+      Serial.printf("{\"event\":\"connected\",\"slot_id\":\"%s\"}\n", s.slot);
+    }
     return;
   }
 
-  drawMessage("Ket noi WiFi...", WIFI_SSID);
-  WiFi.mode(WIFI_STA);
-  WiFi.setSleep(false); // Tat che do ngu modem WiFi de giam do tre goi tin
-  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
-
-  unsigned long startAttempt = millis();
-  while (WiFi.status() != WL_CONNECTED && millis() - startAttempt < 8000) {
-    delay(250);
+  if (!s.hx.is_ready()) {
+    // Qua 1.5s khong co du lieu -> coi nhu rut day
+    if (millis() - s.lastSample > 1500) {
+      s.ready = false;
+      resetFilter(s);
+      Serial.printf("{\"event\":\"disconnected\",\"slot_id\":\"%s\"}\n", s.slot);
+    }
+    return;
   }
 
-  if (WiFi.status() == WL_CONNECTED) {
-    Serial.print("{\"event\":\"wifi_connected\",\"ip\":\"");
-    Serial.print(WiFi.localIP());
-    Serial.println("\"}");
-  } else {
-    Serial.println("{\"warn\":\"wifi_timeout_retrying_in_background\"}");
+  s.lastSample = millis();
+  float raw = s.hx.get_units(1);   // Da san sang -> doc ngay, ~0ms
+  if (isnan(raw) || isinf(raw)) return;
+
+  // Loc EMA: thay doi lon (dat/lay do) -> nhay ngay; nho -> lam muot
+  float diff = raw - s.weight;
+  if (fabs(diff) > 20.0) s.weight = raw;
+  else                   s.weight += 0.35 * diff;
+
+  // Cua so on dinh 8 mau (~0.8s)
+  s.win[s.winIdx] = s.weight;
+  s.winIdx = (s.winIdx + 1) % 8;
+  if (s.winCount < 8) s.winCount++;
+  float mn = s.win[0], mx = s.win[0];
+  for (uint8_t i = 1; i < s.winCount; i++) {
+    if (s.win[i] < mn) mn = s.win[i];
+    if (s.win[i] > mx) mx = s.win[i];
   }
+  s.stable = (s.winCount >= 4) && (mx - mn < STABLE_BAND);
 }
 
-WiFiClient plainClient;
-WiFiClientSecure secureClient;
+float shown(const Scale& s) {
+  return (fabs(s.weight) < ZERO_BAND) ? 0.0 : s.weight;
+}
 
-void pushWeightToServer(float grams, int pcs, bool stable) {
-  if (WiFi.status() != WL_CONNECTED) return;
+// ============================================================
+// 5. MAN HINH OLED - CHIA DOI 2 CAN
+// ============================================================
+void drawHalf(const Scale& s, int yTop) {
+  // Nhan
+  u8g2.setFont(u8g2_font_6x10_tr);
+  char label[24];
+  snprintf(label, sizeof(label), "%s (%s)", s.name, s.slot);
+  u8g2.drawStr(0, yTop + 9, label);
 
+  if (!s.ready) {
+    u8g2.drawStr(10, yTop + 26, "-- Chua ket noi --");
+    return;
+  }
+
+  // Dau hieu on dinh
+  if (s.stable) u8g2.drawStr(110, yTop + 9, "OK");
+  else          u8g2.drawStr(110, yTop + 9, "~");
+
+  // So can lon, can phai
+  char buf[16];
+  snprintf(buf, sizeof(buf), "%.1f", shown(s));
+  u8g2.setFont(u8g2_font_logisoso16_tr);
+  int w = u8g2.getStrWidth(buf);
+  u8g2.drawStr(112 - w, yTop + 30, buf);
+  u8g2.setFont(u8g2_font_6x10_tr);
+  u8g2.drawStr(116, yTop + 30, "g");
+}
+
+void drawScreen() {
+  u8g2.clearBuffer();
+  drawHalf(s1, 0);
+  u8g2.drawHLine(0, 32, 128);
+  drawHalf(s2, 33);
+#if USE_WIFI
+  if (wifiOk) u8g2.drawDisc(100, 4, 2);   // Cham = WiFi OK
+#endif
+  u8g2.sendBuffer();
+}
+
+void drawSplash(const char* line2) {
+  u8g2.clearBuffer();
+  u8g2.setFont(u8g2_font_ncenB12_tr);
+  u8g2.drawStr(10, 26, "TAP TAKE GO");
+  u8g2.setFont(u8g2_font_6x10_tr);
+  u8g2.drawStr(10, 48, line2);
+  u8g2.sendBuffer();
+}
+
+// ============================================================
+// 6. XUAT SERIAL CHO WEB (JSON moi dong)
+// ============================================================
+void printScale(const Scale& s) {
+  Serial.printf("{\"slot_id\":\"%s\",\"weight\":%.1f,\"stable\":%s}\n",
+                s.slot, shown(s), s.stable ? "true" : "false");
+}
+
+// ============================================================
+// 7. TASK WIFI CHAY NEN (CORE 0) -> OLED KHONG BAO GIO GIAT
+// ============================================================
+#if USE_WIFI
+void postSlot(const char* slot, float g, bool st) {
   HTTPClient http;
-  http.setReuse(true);
-  http.setTimeout(3000);
-
-  bool began = false;
-  if (strncmp(SERVER_URL, "https://", 8) == 0) {
-    secureClient.setInsecure();
-    began = http.begin(secureClient, SERVER_URL);
-  } else {
-    began = http.begin(plainClient, SERVER_URL);
-  }
-
-  if (!began) return;
-
+  http.setTimeout(1500);
+  if (!http.begin(SERVER_URL)) return;
   http.addHeader("Content-Type", "application/json");
-  char payload[160];
-  snprintf(
-    payload,
-    sizeof(payload),
-    "{\"slot_id\":\"%s\",\"weight\":%.1f,\"pcs\":%d,\"stable\":%s}",
-    SHELF_SLOT_ID,
-    grams,
-    pcs,
-    stable ? "true" : "false"
-  );
-
-  int httpCode = http.POST((uint8_t*)payload, strlen(payload));
-  if (httpCode <= 0 || httpCode >= 400) {
-    Serial.print("{\"http_error\":");
-    Serial.print(httpCode);
-    Serial.println("}");
-  }
+  char body[96];
+  snprintf(body, sizeof(body), "{\"slot_id\":\"%s\",\"weight\":%.1f,\"stable\":%s}",
+           slot, g, st ? "true" : "false");
+  http.POST((uint8_t*)body, strlen(body));
   http.end();
 }
 
-// Tac vu chay ngam tren Core 0: gui HTTP khong lam ngat HX711/OLED tren Core 1
-void networkPushTask(void* param) {
+void wifiTask(void*) {
+  WiFi.mode(WIFI_STA);
+  WiFi.setSleep(false);
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+
+  float lastW1 = -9999, lastW2 = -9999;
+  unsigned long lastBeat = 0, lastRetry = 0;
+  bool announced = false;
+
   for (;;) {
-    bool shouldPush = false;
-    float w = 0.0;
-    int p = 0;
-    bool st = false;
+    wifiOk = (WiFi.status() == WL_CONNECTED);
 
-    portENTER_CRITICAL(&netMux);
-    if (hasPendingNetPush) {
-      shouldPush = true;
-      w = pendingNetWeight;
-      p = pendingNetPcs;
-      st = pendingNetStable;
-      hasPendingNetPush = false;
+    if (!wifiOk) {
+      announced = false;
+      if (millis() - lastRetry > 15000) {
+        lastRetry = millis();
+        WiFi.disconnect();
+        WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+      }
+      vTaskDelay(pdMS_TO_TICKS(500));
+      continue;
     }
-    portEXIT_CRITICAL(&netMux);
 
-    if (shouldPush) {
-      pushWeightToServer(w, p, st);
+    if (!announced) {
+      announced = true;
+      Serial.printf("{\"event\":\"wifi_connected\",\"ip\":\"%s\"}\n",
+                    WiFi.localIP().toString().c_str());
     }
-    vTaskDelay(pdMS_TO_TICKS(20));
+
+    bool beat = millis() - lastBeat > 3000;
+    float w1 = sharedW1, w2 = sharedW2;
+
+    if (sharedR1 && (beat || fabs(w1 - lastW1) >= 0.5)) {
+      postSlot(SLOT_ID_1, w1, sharedSt1);
+      lastW1 = w1;
+    }
+    if (sharedR2 && (beat || fabs(w2 - lastW2) >= 0.5)) {
+      postSlot(SLOT_ID_2, w2, sharedSt2);
+      lastW2 = w2;
+    }
+    if (beat) lastBeat = millis();
+
+    vTaskDelay(pdMS_TO_TICKS(250));
   }
 }
+#endif
 
-void doTare() {
-  drawMessage("Dang tru bi...", "Vui long cho");
-  scale.tare(10);
-  Serial.println("{\"event\":\"tare_success\"}");
+// ============================================================
+// 8. LENH SERIAL
+// ============================================================
+void tareScale(Scale& s) {
+  if (!s.ready) return;
+  s.hx.tare(5);
+  resetFilter(s);
 }
 
-void doCalibrate(float knownGrams) {
-  if (knownGrams <= 0) {
-    Serial.println("{\"error\":\"Khoi luong mau khong hop le\"}");
+void calibrate(Scale& s, float knownGrams, const char* key) {
+  if (!s.ready || knownGrams <= 0) {
+    Serial.println("{\"event\":\"calib_error\"}");
     return;
   }
-  drawMessage("Dang hieu chuan...", "Giu nguyen vat");
-
-  scale.set_scale(1.0);
-  float raw = scale.get_value(20);
-  calFactor = raw / knownGrams;
-  scale.set_scale(calFactor);
-
-  prefs.putFloat("cal", calFactor);
-
-  char msg[32];
-  snprintf(msg, sizeof(msg), "H/so: %.1f", calFactor);
-  drawMessage("Hieu chuan XONG!", msg);
-
-  Serial.print("{\"event\":\"cal_success\",\"new_factor\":");
-  Serial.print(calFactor, 2);
-  Serial.println("}");
-  delay(1500);
+  long avg = s.hx.get_value(10);    // Da tru bi (offset)
+  float f = avg / knownGrams;
+  if (fabs(f) < 1) { Serial.println("{\"event\":\"calib_error\"}"); return; }
+  s.cal = f;
+  s.hx.set_scale(f);
+  prefs.putFloat(key, f);
+  resetFilter(s);
+  Serial.printf("{\"event\":\"calib_ok\",\"slot_id\":\"%s\",\"factor\":%.2f}\n", s.slot, f);
 }
 
 void handleSerial() {
   if (!Serial.available()) return;
   String cmd = Serial.readStringUntil('\n');
   cmd.trim();
+  if (cmd.length() == 0) return;
 
   if (cmd == "t" || cmd == "TARE") {
-    doTare();
-  } else if (cmd.startsWith("c")) {
-    float weight = cmd.substring(1).toFloat();
-    doCalibrate(weight);
+    tareScale(s1); tareScale(s2);
+    Serial.println("{\"event\":\"tare_success\"}");
+  } else if (cmd == "t1") {
+    tareScale(s1); Serial.println("{\"event\":\"tare_success\",\"slot_id\":\"KH1_1\"}");
+  } else if (cmd == "t2") {
+    tareScale(s2); Serial.println("{\"event\":\"tare_success\",\"slot_id\":\"KH1_2\"}");
+  } else if (cmd.startsWith("c1 ")) {
+    calibrate(s1, cmd.substring(3).toFloat(), "cal1");
+  } else if (cmd.startsWith("c2 ")) {
+    calibrate(s2, cmd.substring(3).toFloat(), "cal2");
   } else if (cmd == "r") {
-    calFactor = 420.0;
-    prefs.putFloat("cal", calFactor);
-    scale.set_scale(calFactor);
-    Serial.println("{\"event\":\"reset_calibration\"}");
+    s1.cal = s2.cal = DEFAULT_CAL;
+    prefs.putFloat("cal1", DEFAULT_CAL);
+    prefs.putFloat("cal2", DEFAULT_CAL);
+    if (s1.ready) s1.hx.set_scale(DEFAULT_CAL);
+    if (s2.ready) s2.hx.set_scale(DEFAULT_CAL);
+    Serial.println("{\"event\":\"reset_calibration_both\"}");
+  } else if (cmd == "i") {
+    Serial.printf("Can1: %s cal=%.2f | Can2: %s cal=%.2f | WiFi: %s\n",
+                  s1.ready ? "OK" : "KHONG", s1.cal,
+                  s2.ready ? "OK" : "KHONG", s2.cal,
+                  wifiOk ? WiFi.localIP().toString().c_str() : "chua");
   }
 }
 
+// ============================================================
+// 9. SETUP
+// ============================================================
 void setup() {
   Serial.begin(115200);
-
-  pinMode(BTN_TARE, INPUT_PULLUP);
-  pinMode(BTN_SAMPLE, INPUT_PULLUP);
+  Serial.setTimeout(50);
+  delay(200);
+  Serial.println();
+  Serial.println("=== TAP TAKE GO - 2 CAN LOADCELL (ESP32) ===");
 
   Wire.begin(I2C_SDA, I2C_SCL);
+  Wire.setClock(400000);           // I2C nhanh -> OLED ve muot
   u8g2.begin();
-  drawMessage("PBL4 - CAN SMART", "Khoi dong...");
+  drawSplash("Dang khoi dong...");
 
-  prefs.begin("scale", false);
-  calFactor = prefs.getFloat("cal", 420.0);
+  prefs.begin("scales", false);
+  s1.cal = prefs.getFloat("cal1", DEFAULT_CAL);
+  s2.cal = prefs.getFloat("cal2", DEFAULT_CAL);
 
-  scale.begin(HX_DT, HX_SCK);
-  scale.set_scale(calFactor);
+  // Danh thuc ca 2 HX711 cung luc roi doi toi da 1s
+  prepPins(s1);
+  prepPins(s2);
+  delay(50);
 
-  if (!scale.wait_ready_timeout(2000)) {
-    drawMessage("Loi HX711!", "Kiem tra day");
-    Serial.println("{\"error\":\"HX711_not_found\"}");
-    while (true) delay(1000);
-  }
+  Serial.print("Can 1 (GPIO16/17)... ");
+  if (waitDtLow(s1, 1000)) { activate(s1); Serial.println("OK"); }
+  else Serial.println("KHONG THAY (se tu nhan khi cam)");
 
-  doTare();
-  connectWiFiInitial();
+  Serial.print("Can 2 (GPIO25/26)... ");
+  if (waitDtLow(s2, 1000)) { activate(s2); Serial.println("OK"); }
+  else Serial.println("KHONG THAY (se tu nhan khi cam)");
 
-  xTaskCreatePinnedToCore(networkPushTask, "WiFiPush", 8192, NULL, 1, NULL, 0);
+#if USE_WIFI
+  xTaskCreatePinnedToCore(wifiTask, "wifi", 8192, NULL, 1, NULL, 0);
+#endif
+
+  Serial.println(">>> SAN SANG <<<");
 }
 
+// ============================================================
+// 10. LOOP (core 1) - chi doc can, ve OLED, xuat Serial
+// ============================================================
 void loop() {
   handleSerial();
 
-  if (digitalRead(BTN_TARE) == LOW && (millis() - lastBtnTare > 400)) {
-    lastBtnTare = millis();
-    doTare();
-    sampleWarm = false;
+  updateScale(s1);
+  updateScale(s2);
+
+  // Cap nhat du lieu cho task WiFi
+  sharedW1 = shown(s1); sharedSt1 = s1.stable; sharedR1 = s1.ready;
+  sharedW2 = shown(s2); sharedSt2 = s2.stable; sharedR2 = s2.ready;
+
+  // OLED ~10 khung/giay
+  static unsigned long lastDraw = 0;
+  if (millis() - lastDraw >= 100) {
+    lastDraw = millis();
+    drawScreen();
   }
 
-  if (digitalRead(BTN_SAMPLE) == LOW && (millis() - lastBtnSample > 400)) {
-    lastBtnSample = millis();
-    float currentW = scale.get_units(5);
-    if (currentW > 0.5) {
-      unitWeight = currentW;
-      drawMessage("Da luu 1 PCS!", "Bat dau dem...");
-      delay(1000);
-    } else {
-      drawMessage("Loi:", "Chua dat vat mau!");
-      delay(1000);
-    }
-    lastOledGrams = -9999.0;
+  // Serial: gui khi thay doi >= 0.5g hoac moi 1s (heartbeat)
+  static float lastP1 = -9999, lastP2 = -9999;
+  static bool  lastS1 = false, lastS2 = false;
+  static unsigned long lastBeat = 0;
+  bool beat = millis() - lastBeat >= 1000;
+
+  if (s1.ready && (beat || fabs(shown(s1) - lastP1) >= 0.5 || s1.stable != lastS1)) {
+    printScale(s1); lastP1 = shown(s1); lastS1 = s1.stable;
   }
-
-  // Thu ket noi lai WiFi ngam neu mat ket noi (khong block cam bien)
-  if (strcmp(WIFI_SSID, "TEN_WIFI_CUA_BAN") != 0 && WiFi.status() != WL_CONNECTED && millis() - lastWifiRetry > 15000) {
-    lastWifiRetry = millis();
-    WiFi.reconnect();
+  if (s2.ready && (beat || fabs(shown(s2) - lastP2) >= 0.5 || s2.stable != lastS2)) {
+    printScale(s2); lastP2 = shown(s2); lastS2 = s2.stable;
   }
+  if (beat) lastBeat = millis();
 
-  // Doc 1 mau moi ngay khi HX711 san sang (khong cho 5 mau lien tiep gay tre 500ms)
-  if (scale.is_ready()) {
-    float rawGrams = scale.get_units(1);
-
-    if (!sampleWarm) {
-      sampleBuf[0] = rawGrams;
-      sampleBuf[1] = rawGrams;
-      sampleBuf[2] = rawGrams;
-      sampleWarm = true;
-    } else {
-      float curAvg = (sampleBuf[0] + sampleBuf[1] + sampleBuf[2]) / 3.0;
-      if (fabs(rawGrams - curAvg) >= 5.0) {
-        // Nhay buoc nhanh khi dat/nhac vat (khong bi tre bo loc trung binh)
-        sampleBuf[0] = rawGrams;
-        sampleBuf[1] = rawGrams;
-        sampleBuf[2] = rawGrams;
-      } else {
-        sampleBuf[sampleIdx] = rawGrams;
-        sampleIdx = (sampleIdx + 1) % 3;
-      }
-    }
-
-    float filteredRaw = (sampleBuf[0] + sampleBuf[1] + sampleBuf[2]) / 3.0;
-    float currentGrams = filteredRaw;
-
-    // THUAT TOAN AUTO-ZERO TRACKING (BAM DIEM 0)
-    if (fabs(currentGrams) <= 0.8) {
-      currentGrams = 0.0;
-    }
-    static unsigned long zeroStartTime = 0;
-    if (fabs(filteredRaw) > 0.3 && fabs(filteredRaw) <= 1.0) {
-      if (zeroStartTime == 0) zeroStartTime = millis();
-      if (millis() - zeroStartTime > 2000) {
-        scale.tare(5);
-        sampleWarm = false;
-        zeroStartTime = 0;
-      }
-    } else {
-      zeroStartTime = 0;
-    }
-
-    isStable = (fabs(currentGrams - lastWeight) < 0.4);
-    lastWeight = currentGrams;
-
-    int count = 0;
-    if (currentGrams > 0.5 && unitWeight > 0.0) {
-      count = round(currentGrams / unitWeight);
-    }
-
-    bool wifiOk = (WiFi.status() == WL_CONNECTED);
-    if (millis() - lastDrawTime >= 120 &&
-        (fabs(currentGrams - lastOledGrams) >= 0.1 || count != lastOledCount || isStable != lastOledStable || wifiOk != lastOledWifi)) {
-      lastDrawTime = millis();
-      lastOledGrams = currentGrams;
-      lastOledCount = count;
-      lastOledStable = isStable;
-      lastOledWifi = wifiOk;
-      drawDisplay(currentGrams, count, isStable);
-    }
-
-    // Xuat Serial ngay khi thay doi >= 0.2g hoac doi stable (toi da moi 80ms), heartbeat 1.5s
-    bool serialChanged = fabs(currentGrams - lastSerialWeight) >= 0.2 || (isStable != lastSerialStable);
-    bool serialBeat    = millis() - lastSerialTime >= 1500;
-    if ((serialChanged && millis() - lastSerialTime >= 80) || serialBeat) {
-      lastSerialTime = millis();
-      lastSerialWeight = currentGrams;
-      lastSerialStable = isStable;
-
-      Serial.print("{\"weight\":");
-      Serial.print(currentGrams, 1);
-      Serial.print(",\"pcs\":");
-      Serial.print(count);
-      Serial.print(",\"stable\":");
-      Serial.print(isStable ? "true" : "false");
-      Serial.println("}");
-    }
-
-    // Day vao hang doi Core 0 de gui WiFi ngam ngay khi co thay doi (toi da moi 100ms), heartbeat 2.5s
-    bool netChanged = fabs(currentGrams - lastQueuedWeight) >= 0.2 || (isStable != lastQueuedStable);
-    bool netBeat    = millis() - lastHttpQueue >= 2500;
-    if (wifiOk && ((netChanged && millis() - lastHttpQueue >= 100) || netBeat)) {
-      lastHttpQueue = millis();
-      lastQueuedWeight = currentGrams;
-      lastQueuedStable = isStable;
-
-      portENTER_CRITICAL(&netMux);
-      pendingNetWeight = currentGrams;
-      pendingNetPcs = count;
-      pendingNetStable = isStable;
-      hasPendingNetPush = true;
-      portEXIT_CRITICAL(&netMux);
-    }
-  }
+  delay(5);
 }

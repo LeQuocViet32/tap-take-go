@@ -303,9 +303,7 @@ export default function AdminPortal() {
 
       const decoder = new TextDecoder();
       let buffer = '';
-      let lastSentWeight = null;
-      let lastSentStable = null;
-      let lastSentAt = 0;
+      const lastSentBySlot = {};
       let inFlight = false;
 
       const reader = port.readable.getReader();
@@ -333,7 +331,9 @@ export default function AdminPortal() {
 
             const isStable = parsed.stable === undefined ? true : Boolean(parsed.stable);
             const pcsVal = parsed.pcs !== undefined ? Number(parsed.pcs) : null;
-            const targetSlot = usbTargetSlotRef.current;
+            const targetSlot = (parsed.slot_id && typeof parsed.slot_id === 'string' && parsed.slot_id.trim())
+              ? parsed.slot_id.trim().toUpperCase()
+              : usbTargetSlotRef.current;
 
             setUsbLastLog({ slot_id: targetSlot, weight: weightVal, pcs: pcsVal, stable: isStable });
 
@@ -366,11 +366,15 @@ export default function AdminPortal() {
             );
 
             const now = Date.now();
-            const weightMoved = lastSentWeight === null || Math.abs(weightVal - lastSentWeight) >= 0.2;
-            const stableFlipped = isStable !== lastSentStable;
-            const heartbeatDue = now - lastSentAt >= 1500;
+            if (!lastSentBySlot[targetSlot]) {
+              lastSentBySlot[targetSlot] = { weight: null, stable: null, at: 0 };
+            }
+            const slotState = lastSentBySlot[targetSlot];
+            const weightMoved = slotState.weight === null || Math.abs(weightVal - slotState.weight) >= 0.2;
+            const stableFlipped = isStable !== slotState.stable;
+            const heartbeatDue = now - slotState.at >= 1500;
 
-            if ((weightMoved || stableFlipped) && now - lastSentAt >= 80 || heartbeatDue) {
+            if ((weightMoved || stableFlipped) && now - slotState.at >= 80 || heartbeatDue) {
               const payload = {
                 slot_id: targetSlot,
                 weight: weightVal,
@@ -379,15 +383,15 @@ export default function AdminPortal() {
               };
 
               if (socket.connected) {
-                lastSentWeight = weightVal;
-                lastSentStable = isStable;
-                lastSentAt = now;
+                slotState.weight = weightVal;
+                slotState.stable = isStable;
+                slotState.at = now;
                 socket.emit('sensor_reading', payload);
               } else if (!inFlight) {
                 inFlight = true;
-                lastSentWeight = weightVal;
-                lastSentStable = isStable;
-                lastSentAt = now;
+                slotState.weight = weightVal;
+                slotState.stable = isStable;
+                slotState.at = now;
 
                 apiFetch('/shelves/sensor-reading', {
                   method: 'POST',
